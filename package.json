@@ -1,0 +1,22 @@
+{
+  "name": "kixx-logger",
+  "version": "1.0.0",
+  "description": "A logger for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kixxauth/kixx-logger.git"
+  },
+  "keywords": [
+    "logger"
+  ],
+  "author": "Kris Walker (www.kixx.name)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kixxauth/kixx-logger/issues"
+  },
+  "homepage": "https://github.com/kixxauth/kixx-logger#readme"
+}
