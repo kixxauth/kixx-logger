@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/kixxauth/kixx-logger/issues"
   },
-  "homepage": "https://github.com/kixxauth/kixx-logger#readme"
+  "homepage": "https://github.com/kixxauth/kixx-logger#readme",
+  "devDependencies": {
+    "eslint": "5.9.0"
+  }
 }
