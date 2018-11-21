@@ -4,7 +4,7 @@
   "description": "A logger for Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "eslint ./"
+    "test": "eslint ./ && kixx-test-node ./test"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,9 @@
   },
   "homepage": "https://github.com/kixxauth/kixx-logger#readme",
   "devDependencies": {
-    "eslint": "5.9.0"
+    "eslint": "5.9.0",
+    "kixx-assert": "1.0.5",
+    "kixx-test-node": "1.2.5",
+    "sinon": "7.1.1"
   }
 }
