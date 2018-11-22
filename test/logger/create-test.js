@@ -1,6 +1,7 @@
 'use strict';
 
 const { assert } = require('kixx-assert');
+const Sinon = require('sinon');
 const { Logger } = require('../../');
 
 module.exports = (t) => {
@@ -52,15 +53,25 @@ module.exports = (t) => {
 	});
 
 	t.describe('Logger#create()', (t1) => {
+		const sandbox = Sinon.createSandbox();
+
 		let parent;
 		let subject;
 
-		const stream1 = {};
-		const stream2 = {};
+		const stream1 = {
+			write() {}
+		};
+
+		const stream2 = {
+			write() {}
+		};
 
 		const serializer1 = function () {};
 
 		t1.before((done) => {
+			sandbox.stub(stream1, 'write');
+			sandbox.stub(stream2, 'write');
+
 			parent = Logger.create({
 				level: Logger.FATAL,
 				defaultFields: {
@@ -76,6 +87,11 @@ module.exports = (t) => {
 
 			subject = parent.create('My Logger');
 
+			done();
+		});
+
+		t1.after((done) => {
+			sandbox.restore();
 			done();
 		});
 
@@ -106,6 +122,24 @@ module.exports = (t) => {
 			assert.isEqual(serializer1, serializers.myProp);
 		});
 
-		t1.xit('emits record to parent stream');
+		t1.it('emits record to parent streams', () => {
+			subject.info('info message');
+			subject.fatal('fatal message');
+
+			assert.isOk(stream1.write.calledOnce, 'stream1.write() calledTwice');
+			assert.isOk(stream2.write.calledOnce, 'stream2.write() calledTwice');
+
+			assert.isEqual(1, stream1.write.firstCall.args.length);
+			assert.isEqual(1, stream2.write.firstCall.args.length);
+
+			const rec1 = stream1.write.firstCall.args[0];
+			const rec2 = stream2.write.firstCall.args[0];
+
+			assert.isEqual('My Logger', rec1.name);
+			assert.isEqual('fatal message', rec1.msg);
+
+			assert.isEqual('My Logger', rec2.name);
+			assert.isEqual('fatal message', rec2.msg);
+		});
 	});
 };
