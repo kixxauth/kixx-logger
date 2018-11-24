@@ -74,7 +74,49 @@ module.exports = (t) => {
 			});
 		});
 
-		t1.xdescribe('with string', (t2) => {
+		t1.describe('with string', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			let subject;
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				subject = Logger.create({ stream });
+				// ERROR level = 50
+				subject.setLevel('error');
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('should set the appropriate level string', () => {
+				assert.isNonEmptyString(Logger.ERROR);
+				assert.isEqual(Logger.ERROR, subject.level);
+			});
+
+			t2.it('should emit only appropriate levels', () => {
+				subject.trace('trace message');
+				subject.debug('debug message');
+				subject.info('info message');
+				subject.warn('warn message');
+				subject.error('error message');
+				subject.fatal('fatal message');
+
+				assert.isOk(stream.write.calledTwice, 'stream.write.calledTwice');
+
+				const rec1 = stream.write.firstCall.args[0];
+				const rec2 = stream.write.secondCall.args[0];
+
+				assert.isEqual(Logger.ERROR, rec1.level);
+				assert.isEqual(Logger.FATAL, rec2.level);
+			});
 		});
 
 		t1.describe('with invalid string', (t2) => {
@@ -100,7 +142,49 @@ module.exports = (t) => {
 			});
 		});
 
-		t1.xdescribe('with children', (t2) => {
+		t1.describe('with children', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			let subject;
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const parent = Logger.create({ stream });
+				subject = parent.create('My Logger');
+				parent.setLevel(Logger.ERROR);
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('should set the appropriate level string', () => {
+				assert.isNonEmptyString(Logger.ERROR);
+				assert.isEqual(Logger.ERROR, subject.level);
+			});
+
+			t2.it('should emit only appropriate levels', () => {
+				subject.trace('trace message');
+				subject.debug('debug message');
+				subject.info('info message');
+				subject.warn('warn message');
+				subject.error('error message');
+				subject.fatal('fatal message');
+
+				assert.isOk(stream.write.calledTwice, 'stream.write.calledTwice');
+
+				const rec1 = stream.write.firstCall.args[0];
+				const rec2 = stream.write.secondCall.args[0];
+
+				assert.isEqual(Logger.ERROR, rec1.level);
+				assert.isEqual(Logger.FATAL, rec2.level);
+			});
 		});
 
 		t1.describe('with invalid argument', (t2) => {
