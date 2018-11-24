@@ -17,9 +17,19 @@ module.exports = (t) => {
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
+
 				subject = Logger.create({ stream });
+
 				// ERROR level = 50
 				subject.setLevel(50);
+
+				subject.trace('trace message');
+				subject.debug('debug message');
+				subject.info('info message');
+				subject.warn('warn message');
+				subject.error('error message');
+				subject.fatal('fatal message');
+
 				done();
 			});
 
@@ -34,13 +44,6 @@ module.exports = (t) => {
 			});
 
 			t2.it('should emit only appropriate levels', () => {
-				subject.trace('trace message');
-				subject.debug('debug message');
-				subject.info('info message');
-				subject.warn('warn message');
-				subject.error('error message');
-				subject.fatal('fatal message');
-
 				assert.isOk(stream.write.calledTwice, 'stream.write.calledTwice');
 
 				const rec1 = stream.write.firstCall.args[0];
