@@ -109,5 +109,60 @@ module.exports = (t) => {
 				assert.isEqual('bar', rec.foo);
 			});
 		});
+
+		t1.describe('with nested children', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			let subject;
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+
+				const grandParent = Logger.create({
+					stream,
+					defaultSerializers: {
+						foo() {
+							return 'foo';
+						}
+					}
+				});
+
+				const parent = grandParent.create('Parent Logger');
+
+				subject = parent.create('Child Logger');
+
+				grandParent.assignSerializers({
+					foo() {
+						return 'bar';
+					},
+					bar() {
+						return 'bar';
+					}
+				});
+
+				subject.debug('debug message', { foo: 1, bar: 1 });
+
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('intercepts expected properties', () => {
+				const rec = stream.write.firstCall.args[0];
+				assert.isEqual('bar', rec.bar);
+			});
+
+			t2.it('overrides default serializers', () => {
+				const rec = stream.write.firstCall.args[0];
+				assert.isEqual('bar', rec.foo);
+			});
+		});
 	});
 };
