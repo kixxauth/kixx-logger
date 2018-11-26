@@ -160,6 +160,1092 @@ module.exports = (t) => {
 		});
 	});
 
-	t.xdescribe('Logger#trace()', (t1) => {
+	t.describe('Logger#trace()', (t1) => {
+		t1.describe('at TRACE level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.TRACE,
+					stream
+				});
+				logger.trace('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.TRACE, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at DEBUG level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.DEBUG,
+					stream
+				});
+				logger.trace('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+
+		t1.describe('at INFO level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.INFO,
+					stream
+				});
+				logger.trace('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+
+		t1.describe('at WARN level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.WARN,
+					stream
+				});
+				logger.trace('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+
+		t1.describe('at ERROR level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.ERROR,
+					stream
+				});
+				logger.trace('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+
+		t1.describe('at FATAL level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.FATAL,
+					stream
+				});
+				logger.trace('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+	});
+
+	t.describe('Logger#debug()', (t1) => {
+		t1.describe('at TRACE level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.TRACE,
+					stream
+				});
+				logger.debug('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.DEBUG, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at DEBUG level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.DEBUG,
+					stream
+				});
+				logger.debug('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.DEBUG, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at INFO level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.INFO,
+					stream
+				});
+				logger.debug('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+
+		t1.describe('at WARN level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.WARN,
+					stream
+				});
+				logger.debug('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+
+		t1.describe('at ERROR level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.ERROR,
+					stream
+				});
+				logger.debug('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+
+		t1.describe('at FATAL level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.FATAL,
+					stream
+				});
+				logger.debug('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+	});
+
+	t.describe('Logger#info()', (t1) => {
+		t1.describe('at TRACE level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.TRACE,
+					stream
+				});
+				logger.info('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.INFO, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at DEBUG level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.DEBUG,
+					stream
+				});
+				logger.info('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.INFO, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at INFO level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.INFO,
+					stream
+				});
+				logger.info('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.INFO, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at WARN level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.WARN,
+					stream
+				});
+				logger.info('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+
+		t1.describe('at ERROR level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.ERROR,
+					stream
+				});
+				logger.info('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+
+		t1.describe('at FATAL level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.FATAL,
+					stream
+				});
+				logger.info('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+	});
+
+	t.describe('Logger#warn()', (t1) => {
+		t1.describe('at TRACE level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.TRACE,
+					stream
+				});
+				logger.warn('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.WARN, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at DEBUG level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.DEBUG,
+					stream
+				});
+				logger.warn('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.WARN, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at INFO level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.INFO,
+					stream
+				});
+				logger.warn('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.WARN, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at WARN level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.WARN,
+					stream
+				});
+				logger.warn('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.WARN, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at ERROR level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.ERROR,
+					stream
+				});
+				logger.warn('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+
+		t1.describe('at FATAL level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.FATAL,
+					stream
+				});
+				logger.warn('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+	});
+
+	t.describe('Logger#error()', (t1) => {
+		t1.describe('at TRACE level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.TRACE,
+					stream
+				});
+				logger.error('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.ERROR, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at DEBUG level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.DEBUG,
+					stream
+				});
+				logger.error('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.ERROR, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at INFO level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.INFO,
+					stream
+				});
+				logger.error('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.ERROR, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at WARN level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.WARN,
+					stream
+				});
+				logger.error('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.ERROR, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at ERROR level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.ERROR,
+					stream
+				});
+				logger.error('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.ERROR, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at FATAL level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.FATAL,
+					stream
+				});
+				logger.error('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('does not emit a log record', () => {
+				assert.isEqual(0, stream.write.callCount);
+			});
+		});
+	});
+
+	t.describe('Logger#fatal()', (t1) => {
+		t1.describe('at TRACE level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.TRACE,
+					stream
+				});
+				logger.fatal('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at DEBUG level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.DEBUG,
+					stream
+				});
+				logger.fatal('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at INFO level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.INFO,
+					stream
+				});
+				logger.fatal('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at WARN level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.WARN,
+					stream
+				});
+				logger.fatal('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at ERROR level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.ERROR,
+					stream
+				});
+				logger.fatal('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
+
+		t1.describe('at FATAL level', (t2) => {
+			const sandbox = Sinon.createSandbox();
+
+			const stream = {
+				write() {}
+			};
+
+			t2.before((done) => {
+				sandbox.stub(stream, 'write');
+				const logger = Logger.create({
+					level: Logger.FATAL,
+					stream
+				});
+				logger.fatal('message', { foo: 'bar' });
+				done();
+			});
+
+			t2.after((done) => {
+				sandbox.restore();
+				done();
+			});
+
+			t2.it('emits a log record', () => {
+				assert.isEqual(1, stream.write.callCount);
+				const [ rec ] = stream.write.firstCall.args;
+				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(new Date().getHours(), rec.time.getHours());
+				assert.isEqual('message', rec.msg);
+				assert.isEqual('bar', rec.foo);
+			});
+		});
 	});
 };
