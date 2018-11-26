@@ -5,13 +5,8 @@ const Sinon = require('sinon');
 const { Logger } = require('../../');
 
 module.exports = (t) => {
-	t.describe('Logger.create()', (t1) => {
-		let subject;
-
-		t1.before((done) => {
-			subject = Logger.create();
-			done();
-		});
+	t.describe('Logger.create() with defaults', (t1) => {
+		const subject = Logger.create();
 
 		t1.it('assigns default level=DEFAULT', () => {
 			assert.isDefined(subject.level);
@@ -30,6 +25,50 @@ module.exports = (t) => {
 		t1.it('assigns a default name', () => {
 			const { fields } = subject;
 			assert.isEqual('root', fields.name);
+		});
+
+		t1.it('assigns fields.hostname', () => {
+			const { fields } = subject;
+			assert.isNonEmptyString(fields.hostname, 'fields.hostname');
+		});
+
+		t1.it('assigns fields.pid', () => {
+			const { fields } = subject;
+			assert.isNumberNotNaN(fields.pid, 'fields.pid');
+		});
+
+		t1.it('does not have a default stream', () => {
+			assert.isEqual(0, subject.streams.length);
+		});
+
+		t1.it('does not have default serializers', () => {
+			const serializers = Object.keys(subject.serializers);
+			assert.isEqual(0, serializers.length);
+		});
+	});
+
+	t.describe('Logger.create() with options.name', (t1) => {
+		const subject = Logger.create({
+			name: 'My Logger'
+		});
+
+		t1.it('assigns default level=DEFAULT', () => {
+			assert.isDefined(subject.level);
+			assert.isEqual(Logger.DEBUG, subject.level);
+		});
+
+		t1.it('assigns only default fields', () => {
+			const { fields } = subject;
+			const keys = Object.keys(fields);
+			assert.isEqual(3, keys.length);
+			assert.isOk(keys.includes('name'), 'fields.name');
+			assert.isOk(keys.includes('hostname'), 'fields.hostname');
+			assert.isOk(keys.includes('pid'), 'fields.pid');
+		});
+
+		t1.it('assigns a name', () => {
+			const { fields } = subject;
+			assert.isEqual('My Logger', fields.name);
 		});
 
 		t1.it('assigns fields.hostname', () => {

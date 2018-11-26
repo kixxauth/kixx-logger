@@ -12,6 +12,10 @@ exports.serializers = {
 	err: require('./lib/serializers/err')
 };
 
+// options.name
+// options.level
+// options.stream
+// options.serializers
 function createLogger(options) {
 	options = options || {};
 
@@ -24,8 +28,13 @@ function createLogger(options) {
 		);
 	}
 
+	const prettyLevels = [
+		Logger.TRACE,
+		Logger.DEBUG
+	];
+
 	const stream = options.stream || exports.streams.JsonStdout.create({
-		makePretty: Logger.goLevel(Logger.DEBUG, level)
+		makePretty: prettyLevels.includes(level)
 	});
 
 	const serializers = options.serializers || exports.serializers;
