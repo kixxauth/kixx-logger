@@ -4,7 +4,7 @@
   "description": "A logger for Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "eslint ./ && kixx-test-node ./test"
+    "test": "eslint ./ && kixx-test-node --quiet ./test"
   },
   "repository": {
     "type": "git",
