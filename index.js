@@ -12,6 +12,13 @@ exports.serializers = {
 	err: require('./lib/serializers/err')
 };
 
+function composeDefaultSerializers(options) {
+	return Object.keys(exports.serializers).reduce((serializers, key) => {
+		serializers[key] = exports.serializers[key](options);
+		return serializers;
+	}, {});
+}
+
 // options.name
 // options.level
 // options.stream
@@ -37,7 +44,7 @@ function createLogger(options) {
 		makePretty: prettyLevels.includes(level)
 	});
 
-	const serializers = options.serializers || exports.serializers;
+	const serializers = options.serializers || composeDefaultSerializers(options);
 
 	return Logger.create({
 		name,
