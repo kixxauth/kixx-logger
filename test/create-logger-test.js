@@ -50,11 +50,11 @@ module.exports = (t) => {
 
 			const calls = process.stdout.write.getCalls();
 
-			const level1 = calls[0].args[0].split(' ')[1];
-			const level2 = calls[1].args[0].split(' ')[1];
+			const level1 = calls[0].args[0].split(' - ')[1];
+			const level2 = calls[1].args[0].split(' - ')[1];
 
-			assert.isEqual(Logger.DEBUG, level1);
-			assert.isEqual(Logger.INFO, level2);
+			assert.isEqual('DEBUG (20)', level1);
+			assert.isEqual('INFO (30)', level2);
 		});
 
 		t1.it('has default name', () => {
@@ -64,8 +64,8 @@ module.exports = (t) => {
 
 			const calls = process.stdout.write.getCalls();
 
-			const name1 = calls[0].args[0].split(' ')[3];
-			const name2 = calls[1].args[0].split(' ')[3];
+			const name1 = calls[0].args[0].split(' - ')[2];
+			const name2 = calls[1].args[0].split(' - ')[2];
 
 			assert.isEqual('root', name1);
 			assert.isEqual('root', name2);

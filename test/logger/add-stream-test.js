@@ -49,12 +49,12 @@ module.exports = (t) => {
 				const call5 = stream.write.getCall(4);
 				const call6 = stream.write.getCall(5);
 
-				assert.isEqual(Logger.TRACE, call1.args[0].level);
-				assert.isEqual(Logger.DEBUG, call2.args[0].level);
-				assert.isEqual(Logger.INFO, call3.args[0].level);
-				assert.isEqual(Logger.WARN, call4.args[0].level);
-				assert.isEqual(Logger.ERROR, call5.args[0].level);
-				assert.isEqual(Logger.FATAL, call6.args[0].level);
+				assert.isEqual(10, call1.args[0].level);
+				assert.isEqual(20, call2.args[0].level);
+				assert.isEqual(30, call3.args[0].level);
+				assert.isEqual(40, call4.args[0].level);
+				assert.isEqual(50, call5.args[0].level);
+				assert.isEqual(60, call6.args[0].level);
 			});
 		});
 
@@ -128,8 +128,8 @@ module.exports = (t) => {
 				const call1 = stream.write.getCall(0);
 				const call2 = stream.write.getCall(1);
 
-				assert.isEqual(Logger.ERROR, call1.args[0].level);
-				assert.isEqual(Logger.FATAL, call2.args[0].level);
+				assert.isEqual(50, call1.args[0].level);
+				assert.isEqual(60, call2.args[0].level);
 			});
 		});
 
@@ -175,8 +175,8 @@ module.exports = (t) => {
 				const call1 = stream.write.getCall(0);
 				const call2 = stream.write.getCall(1);
 
-				assert.isEqual(Logger.ERROR, call1.args[0].level);
-				assert.isEqual(Logger.FATAL, call2.args[0].level);
+				assert.isEqual(50, call1.args[0].level);
+				assert.isEqual(60, call2.args[0].level);
 			});
 		});
 
@@ -230,8 +230,8 @@ module.exports = (t) => {
 				const call1 = stream.write.getCall(0);
 				const call2 = stream.write.getCall(1);
 
-				assert.isEqual(Logger.ERROR, call1.args[0].level);
-				assert.isEqual(Logger.FATAL, call2.args[0].level);
+				assert.isEqual(50, call1.args[0].level);
+				assert.isEqual(60, call2.args[0].level);
 			});
 		});
 
@@ -285,12 +285,12 @@ module.exports = (t) => {
 				const call5 = stream.write.getCall(4);
 				const call6 = stream.write.getCall(5);
 
-				assert.isEqual(Logger.TRACE, call1.args[0].level);
-				assert.isEqual(Logger.DEBUG, call2.args[0].level);
-				assert.isEqual(Logger.INFO, call3.args[0].level);
-				assert.isEqual(Logger.WARN, call4.args[0].level);
-				assert.isEqual(Logger.ERROR, call5.args[0].level);
-				assert.isEqual(Logger.FATAL, call6.args[0].level);
+				assert.isEqual(10, call1.args[0].level);
+				assert.isEqual(20, call2.args[0].level);
+				assert.isEqual(30, call3.args[0].level);
+				assert.isEqual(40, call4.args[0].level);
+				assert.isEqual(50, call5.args[0].level);
+				assert.isEqual(60, call6.args[0].level);
 			});
 		});
 	});

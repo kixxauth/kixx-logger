@@ -49,8 +49,8 @@ module.exports = (t) => {
 				const rec1 = stream.write.firstCall.args[0];
 				const rec2 = stream.write.secondCall.args[0];
 
-				assert.isEqual(Logger.ERROR, rec1.level);
-				assert.isEqual(Logger.FATAL, rec2.level);
+				assert.isEqual(50, rec1.level);
+				assert.isEqual(60, rec2.level);
 			});
 		});
 
@@ -117,8 +117,8 @@ module.exports = (t) => {
 				const rec1 = stream.write.firstCall.args[0];
 				const rec2 = stream.write.secondCall.args[0];
 
-				assert.isEqual(Logger.ERROR, rec1.level);
-				assert.isEqual(Logger.FATAL, rec2.level);
+				assert.isEqual(50, rec1.level);
+				assert.isEqual(60, rec2.level);
 			});
 		});
 
@@ -185,8 +185,8 @@ module.exports = (t) => {
 				const rec1 = stream.write.firstCall.args[0];
 				const rec2 = stream.write.secondCall.args[0];
 
-				assert.isEqual(Logger.ERROR, rec1.level);
-				assert.isEqual(Logger.FATAL, rec2.level);
+				assert.isEqual(50, rec1.level);
+				assert.isEqual(60, rec2.level);
 			});
 		});
 
@@ -235,8 +235,8 @@ module.exports = (t) => {
 				const rec1 = stream.write.firstCall.args[0];
 				const rec2 = stream.write.secondCall.args[0];
 
-				assert.isEqual(Logger.ERROR, rec1.level);
-				assert.isEqual(Logger.FATAL, rec2.level);
+				assert.isEqual(50, rec1.level);
+				assert.isEqual(60, rec2.level);
 			});
 		});
 

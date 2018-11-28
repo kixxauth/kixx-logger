@@ -31,12 +31,12 @@ module.exports = (t) => {
 		};
 
 		const LEVELS = [
-			Logger.TRACE,
-			Logger.DEBUG,
-			Logger.INFO,
-			Logger.WARN,
-			Logger.ERROR,
-			Logger.FATAL
+			[ Logger.TRACE, 10 ],
+			[ Logger.DEBUG, 20 ],
+			[ Logger.INFO, 30 ],
+			[ Logger.WARN, 40 ],
+			[ Logger.ERROR, 50 ],
+			[ Logger.FATAL, 60 ]
 		];
 
 		t1.before((done) => {
@@ -71,15 +71,15 @@ module.exports = (t) => {
 
 			const tests = calls.map((call, index) => {
 				const [ rec ] = call.args;
-				const level = LEVELS[index];
-				return { rec, level };
+				const [ levelS, levelN ] = LEVELS[index];
+				return { rec, levelS, levelN };
 			});
 
-			tests.forEach(({ rec, level }) => {
+			tests.forEach(({ rec, levelS, levelN }) => {
 				assert.isEqual('bozo', rec.name);
-				assert.isNonEmptyString(rec.level);
-				assert.isEqual(level, rec.level);
-				assert.isEqual(`${level} message`, rec.msg);
+				assert.isNumberNotNaN(rec.level);
+				assert.isEqual(levelN, rec.level);
+				assert.isEqual(`${levelS} message`, rec.msg);
 				assert.isEqual('My Hostname', rec.hostname);
 				assert.isEqual(new Date().getFullYear(), rec.time);
 				assert.isEqual('BAR', rec.foo);
@@ -186,7 +186,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.TRACE, rec.level);
+				assert.isEqual(10, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -355,7 +355,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.DEBUG, rec.level);
+				assert.isEqual(20, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -387,7 +387,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.DEBUG, rec.level);
+				assert.isEqual(20, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -529,7 +529,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.INFO, rec.level);
+				assert.isEqual(30, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -561,7 +561,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.INFO, rec.level);
+				assert.isEqual(30, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -593,7 +593,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.INFO, rec.level);
+				assert.isEqual(30, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -708,7 +708,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.WARN, rec.level);
+				assert.isEqual(40, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -740,7 +740,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.WARN, rec.level);
+				assert.isEqual(40, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -772,7 +772,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.WARN, rec.level);
+				assert.isEqual(40, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -804,7 +804,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.WARN, rec.level);
+				assert.isEqual(40, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -892,7 +892,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.ERROR, rec.level);
+				assert.isEqual(50, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -924,7 +924,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.ERROR, rec.level);
+				assert.isEqual(50, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -956,7 +956,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.ERROR, rec.level);
+				assert.isEqual(50, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -988,7 +988,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.ERROR, rec.level);
+				assert.isEqual(50, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -1020,7 +1020,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.ERROR, rec.level);
+				assert.isEqual(50, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -1081,7 +1081,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(60, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -1113,7 +1113,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(60, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -1145,7 +1145,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(60, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -1177,7 +1177,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(60, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -1209,7 +1209,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(60, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);
@@ -1241,7 +1241,7 @@ module.exports = (t) => {
 			t2.it('emits a log record', () => {
 				assert.isEqual(1, stream.write.callCount);
 				const [ rec ] = stream.write.firstCall.args;
-				assert.isEqual(Logger.FATAL, rec.level);
+				assert.isEqual(60, rec.level);
 				assert.isEqual(new Date().getHours(), rec.time.getHours());
 				assert.isEqual('message', rec.msg);
 				assert.isEqual('bar', rec.foo);

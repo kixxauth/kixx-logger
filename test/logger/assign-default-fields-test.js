@@ -50,11 +50,11 @@ module.exports = (t) => {
 				const rec1 = stream.write.firstCall.args[0];
 				const rec2 = stream.write.secondCall.args[0];
 
-				assert.isEqual(Logger.DEBUG, rec1.level);
+				assert.isEqual(20, rec1.level);
 				assert.isEqual('bar', rec1.foo);
 				assert.isEqual('foo', rec1.bar);
 
-				assert.isEqual(Logger.INFO, rec2.level);
+				assert.isEqual(30, rec2.level);
 				assert.isEqual('bar', rec2.foo);
 				assert.isEqual('baz', rec2.bar);
 			});
@@ -106,11 +106,11 @@ module.exports = (t) => {
 				const rec1 = stream.write.firstCall.args[0];
 				const rec2 = stream.write.secondCall.args[0];
 
-				assert.isEqual(Logger.DEBUG, rec1.level);
+				assert.isEqual(20, rec1.level);
 				assert.isEqual('bar', rec1.foo);
 				assert.isEqual('foo', rec1.bar);
 
-				assert.isEqual(Logger.INFO, rec2.level);
+				assert.isEqual(30, rec2.level);
 				assert.isEqual('bar', rec2.foo);
 				assert.isEqual('baz', rec2.bar);
 			});
@@ -164,11 +164,11 @@ module.exports = (t) => {
 				const rec1 = stream.write.firstCall.args[0];
 				const rec2 = stream.write.secondCall.args[0];
 
-				assert.isEqual(Logger.DEBUG, rec1.level);
+				assert.isEqual(20, rec1.level);
 				assert.isEqual('bar', rec1.foo);
 				assert.isEqual('foo', rec1.bar);
 
-				assert.isEqual(Logger.INFO, rec2.level);
+				assert.isEqual(30, rec2.level);
 				assert.isEqual('bar', rec2.foo);
 				assert.isEqual('baz', rec2.bar);
 			});

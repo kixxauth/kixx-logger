@@ -46,13 +46,13 @@ module.exports = (t) => {
 		t1.it('writes expected output string for default fields', () => {
 			const { args } = process.stdout.write.firstCall;
 			const { hostname, pid, time } = JSON.parse(args[0]);
-			assert.isEqual(`{"name":"root","hostname":"${hostname}","pid":${pid},"time":"${time}","level":"info","msg":"default fields"}${EOL}`, args[0]);
+			assert.isEqual(`{"name":"root","hostname":"${hostname}","pid":${pid},"time":"${time}","level":30,"msg":"default fields"}${EOL}`, args[0]);
 		});
 
 		t1.it('writes expected output string for additional fields', () => {
 			const { args } = process.stdout.write.secondCall;
 			const { hostname, pid, time } = JSON.parse(args[0]);
-			assert.isEqual(`{"name":"root","hostname":"${hostname}","pid":${pid},"time":"${time}","level":"info","msg":"additional fields","foo":[{"bar":"baz"},1,false]}${EOL}`, args[0]);
+			assert.isEqual(`{"name":"root","hostname":"${hostname}","pid":${pid},"time":"${time}","level":30,"msg":"additional fields","foo":[{"bar":"baz"},1,false]}${EOL}`, args[0]);
 		});
 	});
 
@@ -89,7 +89,7 @@ module.exports = (t) => {
 
 		t1.it('writes expected output string for default fields', () => {
 			const { args } = process.stdout.write.firstCall;
-			assert.isMatch(/^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}.[\d]{3}Z\sinfo\s-\sroot\s-\sdefault\sfields$/, args[0].trim());
+			assert.isMatch(/^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}.[\d]{3}Z\s-\sINFO\s\(30\)\s-\sroot\s-\sdefault\sfields$/, args[0].trim());
 			assert.isOk(args[0].endsWith(EOL));
 		});
 
@@ -100,7 +100,7 @@ module.exports = (t) => {
 
 			assert.isEqual(2, lines.length);
 
-			assert.isMatch(/^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}.[\d]{3}Z\sinfo\s-\sroot\s-\sadditional\sfields\s-$/, lines[0]);
+			assert.isMatch(/^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}.[\d]{3}Z\s-\sINFO\s\(30\)\s-\sroot\s-\sadditional\sfields\s-$/, lines[0]);
 
 			assert.isEqual("{ foo: [ { bar: 'baz' }, 1, false ] }", lines[1]); // eslint-disable-line quotes
 		});
@@ -142,7 +142,7 @@ module.exports = (t) => {
 			const { args } = process.stdout.write.firstCall;
 			assert.isOk(args[0].endsWith(EOL));
 			const { hostname, pid, time } = JSON.parse(args[0]);
-			assert.isEqual(`{"name":"root","hostname":"${hostname}","pid":${pid},"time":"${time}","level":"info","msg":"circular fields","foo":"bar","bar":"baz","circ":{"foo":"bar","bar":"baz","circ":"[Circular]"}}${EOL}`, args[0]);
+			assert.isEqual(`{"name":"root","hostname":"${hostname}","pid":${pid},"time":"${time}","level":30,"msg":"circular fields","foo":"bar","bar":"baz","circ":{"foo":"bar","bar":"baz","circ":"[Circular]"}}${EOL}`, args[0]);
 		});
 	});
 
@@ -187,7 +187,7 @@ module.exports = (t) => {
 
 			assert.isEqual(4, lines.length);
 
-			assert.isMatch(/^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}.[\d]{3}Z\sinfo\s-\sroot\s-\scircular\sfields\s-$/, lines[0]);
+			assert.isMatch(/^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}.[\d]{3}Z\s-\sINFO\s\(30\)\s-\sroot\s-\scircular\sfields\s-$/, lines[0]);
 
 			assert.isEqual("{ foo: 'bar',", lines[1]); // eslint-disable-line quotes
 			assert.isEqual("  bar: 'baz',", lines[2]); // eslint-disable-line quotes
