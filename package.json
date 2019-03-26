@@ -2,6 +2,10 @@
   "name": "kixx-logger",
   "version": "1.0.0",
   "description": "A logger for Node.js",
+  "files": [
+    "lib/**",
+    "index.js"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "eslint ./ && kixx-test-node --quiet ./test",
