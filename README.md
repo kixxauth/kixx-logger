@@ -24,10 +24,16 @@ logger.info('log message with custom object', {req: {
 // {"time":"2030-03-27T13:07:16.232Z","level":30,"msg":"log message with custom object","name":"root","hostname":"kixxauths-Mac-mini.local","pid":38010,"req":{"url":"/foo/index.html","method":"GET"}}
 
 logger.warn('warning message');
+// stdout:
+// {"time":"2030-03-27T13:07:16.241Z","level":40,"msg":"warning message","name":"root","hostname":"kixxauths-Mac-mini.local","pid":38010}
 
 logger.error('error message with Error', { err: new Error('Something bad happened') });
+// stdout:
+// {"time":"2030-03-27T13:07:16.252Z","level":50,"msg":"error message with Error","name":"root","hostname":"kixxauths-Mac-mini.local","pid":38010,"err":{"name":"Error","message":"Something bad happened","stack":"[ .. redacted for brevity .. ]"}}
 
 logger.fatal('crashing');
+// stdout:
+// {"time":"2030-03-27T13:07:16.261Z","level":60,"msg":"crashing","name":"root","hostname":"kixxauths-Mac-mini.local","pid":38010}
 ```
 
 Copyright and License
