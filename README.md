@@ -9,7 +9,9 @@ Default logger examples with default output and prettified output.
 const { createLogger } = require('kixx-logger');
 
 const logger = createLogger();
+```
 
+```js
 // TRACE
 logger.trace('trace message');
 
@@ -18,7 +20,9 @@ logger.trace('trace message');
 
 // prettified stdout:
 // 09:07:16.221 TRACE root "trace message"
+```
 
+```js
 // DEBUG
 logger.debug('debug message with custom property', {elapsed: 10});
 
@@ -27,7 +31,9 @@ logger.debug('debug message with custom property', {elapsed: 10});
 
 // prettified stdout:
 // 09:07:16.227 DEBUG root "debug message with custom property" { elapsed: 10 }
+```
 
+```js
 // INFO
 logger.info('log message with custom object', {req: {
     url: '/foo/index.html',
@@ -39,7 +45,9 @@ logger.info('log message with custom object', {req: {
 
 // prettified stdout:
 // 09:07:16.232 INFO root "log message with custom object" { req: { url: '/foo/index.html', method: 'GET' } }
+```
 
+```js
 // WARN
 logger.warn('warning message');
 
@@ -48,7 +56,9 @@ logger.warn('warning message');
 
 // prettified stdout:
 // 09:07:16.241 WARN root "warning message"
+```
 
+```js
 // ERROR
 logger.error('error message with Error', { err: new Error('Something bad happened') });
 
@@ -67,7 +77,9 @@ logger.error('error message with Error', { err: new Error('Something bad happene
 //        at bound (domain.js:301:14)
 //        at REPLServer.runBound [as eval] (domain.js:314:12)'
 // }
+```
 
+```js
 // FATAL
 logger.fatal('crashing');
 // default stdout:
@@ -110,9 +122,6 @@ Logger.levelToString(Logger.INFO); // "INFO"
 Logger.levelToString(Logger.WARN); // "WARN"
 Logger.levelToString(Logger.ERROR); // "ERROR"
 Logger.levelToString(Logger.FATAL); // "FATAL"
-
-logger.level; // 10
-logger.levelString; // 'TRACE'
 
 logger.level === Logger.TRACE; // true
 logger.levelString === Logger.levelToString(Logger.TRACE); // true
