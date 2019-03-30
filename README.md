@@ -113,7 +113,7 @@ const logger = createLogger({
 __createLogger(options)__
 
 - `options.name` (default="root"): The name String of the logger. This will populate the `name` field on log output records.
-- `options.level` (default=Logger.TRACE): A level Integer or String. This will control which log records are output and will populate the `level` field on log output records. See [Log Levels](#log-levels) below.
+- `options.level` (default=Logger.TRACE): A level Integer or String. This will control which log records are output. See [Log Levels](#log-levels) below.
 - `options.serializers` (default=serializers): An Object of serializers which map to log record fields. See [Serializers](#serializers) below.
 - `options.fields` (default=fields): An Object of values which should be included in log records by default. See [Fields](#fields) below.
 - `options.streams` (default=Array<JSONStream>): An Array of Node.js writable Streams to use for log output. See [Streams](#streams) below.
@@ -184,6 +184,104 @@ const logger = createLogger({
 logger.level; // 30
 logger.levelString: // "INFO"
 ```
+
+## Serializers
+Each log method (`trace()`, `debug()`, `info()`, `warn()`, `error()`, `fatal()`) emits a log record. A log record is then serialized to the chosen output stream, typically using the default JSONStream to `process.stdout` (see [Streams](#streams) below). Using custom serializers enable you to modify the fields in the log record before it is output by a stream.
+
+Serializer keys must match the names of the log record fields they are meant to serialize. A serializer must be a function which takes an options Object as input and returns a nested function which takes the field value as input and returns a new Object or primitive value.
+
+Here is an example of creating a logger with a serializer added to serialize Node.js IncomingRequest instances:
+
+```js
+const { createLogger, serializers } = require('kixx-logger');
+
+function requestSerializer(options) {
+    return function (req) {
+        const r = {
+            method: req.method,
+            path: req.url.split('?')[0],
+            query: req.url.split('?')[1] || ''
+        };
+
+        if (options.requestHeaders) {
+            r.headers = req.headers;
+        }
+
+        return r;
+    };
+}
+
+// Or, define your serializer the new, fancy way:
+const requestSerializer = (options) => (req) => {
+    const r = {
+        method: req.method,
+        path: req.url.split('?')[0],
+        query: req.url.split('?')[1] || ''
+    };
+
+    if (options.requestHeaders) {
+        r.headers = req.headers;
+    }
+
+    return r;
+};
+
+const customSerializers = Object.assign({}, serializers, {
+    req: requestSerializer
+});
+
+const logger = createLogger({
+    name: 'request',
+    serializers: customSerializers,
+    requestHeaders: true
+});
+```
+
+With the default JSONStream output the above serializer would result in this:
+```js
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+    logger.info('web request', { req });
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('request logged');
+});
+
+server.listen();
+
+// Log output would look like this:
+// {"time":"2030-03-27T18:09:16.227Z","level":30,"msg":"web request","name":"request","hostname":"kixxauths-Mac-mini.local","pid":38010,"req"{"method":"GET","path":"/get/something","query":"foo=bar","headers":{"host":"localhost:8080","user-agent":"curl/7.54.0","accept":"*/*"}}}
+```
+
+## Fields
+Each log method (`trace()`, `debug()`, `info()`, `warn()`, `error()`, `fatal()`) emits a log record. A log record is made up of fields, which may be nested.
+
+Default fields added to every log record are:
+
+- __name__ : The name String of the logger.
+- __hostname__ : The string derived from `require('os').hostname()`.
+- __pid__ : The `process.pid` value.
+
+Except for `name`, you can override the default fields or add your own. The `name` field is internally overridden to use the logger name.
+```js
+const { createLogger, fields } = require('kixx-logger');
+
+const customFields = Object.assign({}, fields, {
+    hostname: 'foo.bar.baz',
+    env: process.env.NODE_ENV || 'development'
+});
+
+const logger = createLogger({
+    name: 'Foo',
+    fields: customFields
+});
+
+logger.info('application started');
+
+// Log output would look like this:
+// {"time":"2030-03-27T14:07:16.221Z","level":30,"msg":"application started","name":"Foo","hostname":"foo.bar.baz","pid":38010,"env":"development"}
+```
+
 
 Copyright and License
 ---------------------
