@@ -89,6 +89,36 @@ logger.fatal('crashing');
 // 09:07:16.261 FATAL root "crashing"
 ```
 
+## Create a Logger
+__createLogger()__ Create a new Logger instance with passed options. Shown passing the defaults here:
+```js
+const { createLogger, Logger, serializers, fields, JSONStream } = require('kixx-logger');
+
+const logger = createLogger({
+    name: 'root',
+    level: Logger.TRACE,
+    serializers: {
+        err: serializers.err
+    },
+    fields: {
+        hostname: fields.hostname,
+        pid: fields.pid
+    },
+    streams: [ new JSONStream({ pretty: false }) ],
+    pretty: false
+});
+```
+
+### Options
+__createLogger(options)__
+
+- `options.name` (default="root"): The name String of the logger. This will populate the `name` field on log output records.
+- `options.level` (default=Logger.TRACE): A level Integer or String. This will control which log records are output and will populate the `level` field on log output records. See [Log Levels](#log-levels) below.
+- `options.serializers` (default=serializers): An Object of serializers which map to log record fields. See [Serializers](#serializers) below.
+- `options.fields` (default=fields): An Object of values which should be included in log records by default. See [Fields](#fields) below.
+- `options.streams` (default=Array<JSONStream>): An Array of Node.js writable Streams to use for log output. See [Streams](#streams) below.
+- `options.pretty` (default=false): Really only relevant to the default JSONStream. It indicates to the output stream to produce pretty output strings rather than condensed JSON strings. If you pass in your own streams Array, this option will not be used.
+
 ## Log Levels
 By default, a logger is set at the TRACE level, which means all of these will produce output:
 ```js
@@ -143,6 +173,16 @@ logger.info('info message');
 logger.warn('warning message');
 logger.error('error message');
 logger.fatal('fatal message');
+```
+
+You can create a logger at a different level by passing `options.level`:
+```js
+const logger = createLogger({
+    level: Logger.INFO
+});
+
+logger.level; // 30
+logger.levelString: // "INFO"
 ```
 
 Copyright and License
