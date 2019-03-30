@@ -112,12 +112,12 @@ const logger = createLogger({
 ### Options
 __createLogger(options)__
 
-- `options.name` (default="root"): The name String of the logger. This will populate the `name` field on log output records.
-- `options.level` (default=Logger.TRACE): A level Integer or String. This will control which log records are output. See [Log Levels](#log-levels) below.
-- `options.serializers` (default=serializers): An Object of serializers which map to log record fields. See [Serializers](#serializers) below.
-- `options.fields` (default=fields): An Object of values which should be included in log records by default. See [Fields](#fields) below.
-- `options.streams` (default=Array<JSONStream>): An Array of Node.js writable Streams to use for log output. See [Streams](#streams) below.
-- `options.pretty` (default=false): Really only relevant to the default JSONStream. It indicates to the output stream to produce pretty output strings rather than condensed JSON strings. If you pass in your own streams Array, this option will not be used.
+- __options.name__ (default="root"): The name String of the logger. This will populate the `name` field on log output records.
+- __options.level__ (default=Logger.TRACE): A level Integer or String. This will control which log records are output. See [Log Levels](#log-levels) below.
+- __options.serializers__ (default=serializers): An Object of serializers which map to log record fields. See [Serializers](#serializers) below.
+- __options.fields__ (default=fields): An Object of values which should be included in log records by default. See [Fields](#fields) below.
+- __options.streams__ (default=Array<JSONStream>): An Array of Node.js writable Streams to use for log output. See [Streams](#streams) below.
+- __options.pretty__ (default=false): Really only relevant to the default JSONStream. It indicates to the output stream to produce pretty output strings rather than condensed JSON strings. If you pass in your own streams Array, this option will not be used.
 
 ## Log Levels
 By default, a logger is set at the TRACE level, which means all of these will produce output:
@@ -157,7 +157,7 @@ logger.level === Logger.TRACE; // true
 logger.levelString === Logger.levelToString(Logger.TRACE); // true
 ```
 
-At any point in your application you can change the log level for a logger. For example:
+At any point in your application you can change the log level for a logger.
 ```js
 logger.setLevel(Logger.WARN);
 
