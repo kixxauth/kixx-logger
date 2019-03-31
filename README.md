@@ -104,7 +104,7 @@ const logger = createLogger({
         hostname: fields.hostname,
         pid: fields.pid
     },
-    streams: [ new JSONStream({ pretty: false }) ],
+    streams: [ new JSONStream() ],
     pretty: false
 });
 ```
@@ -117,7 +117,7 @@ __createLogger(options)__
 - __options.serializers__ (default=serializers): An Object of serializers which map to log record fields. See [Serializers](#serializers) below.
 - __options.fields__ (default=fields): An Object of values which should be included in log records by default. See [Fields](#fields) below.
 - __options.streams__ (default=Array<JSONStream>): An Array of Node.js writable Streams to use for log output. See [Streams](#streams) below.
-- __options.pretty__ (default=false): Really only relevant to the default JSONStream. It indicates to the output stream to produce pretty output strings rather than condensed JSON strings. If you pass in your own streams Array, this option will not be used.
+- __options.pretty__ (default=false): If true and the default streams are used then use the PrettyStream instead of the JSONStream. If you pass in your own streams Array, this option will not be used.
 
 ## Log Levels
 By default, a logger is set at the TRACE level, which means all of these will produce output:
@@ -280,6 +280,79 @@ logger.info('application started');
 
 // Log output would look like this:
 // {"time":"2030-03-27T14:07:16.221Z","level":30,"msg":"application started","name":"Foo","hostname":"foo.bar.baz","pid":38010,"env":"development"}
+```
+
+## Streams
+Streams are Node.js Writable Streams which take log records emitted by each log method (`trace()`, `debug()`, `info()`, `warn()`, `error()`, `fatal()`) and output a serialized version of it somewhere, usually to stdout. The default stream (JSONStream) outputs log records serialized as JSON text to stdout. A logger may have multiple streams attached to it, and it will output log records to all of them simultaneously.
+
+Log records passed to a writable stream have a specific shape:
+
+```js
+{
+    time: new Date(), // The current date-time as a JavaScript Date instance.
+    level: 30, // The log level Integer of the logging method called (30 is info).
+    msg: "some log message", // The message String passed into the log method.
+    name: "logger_name" // The name String of the logger used to log the method.
+}
+```
+
+Other fields are added to the log record if they are defined before being passed into the output streams. The default fields are `hostname` and `pid`, but you can add more of your own (see [Fields](#fields) above).
+
+Because a stream needs to accept log record Objects, it must be set to object mode:
+```js
+const { Writable } = require('stream');
+
+class MyOutputStream extends Writable {
+    constructor(options) {
+        super({ objectMode: true });
+    }
+}
+```
+
+You can set a `level` property on your stream, which will filter output to it to only that level and higher. So, for a stream set `stream.level = Logger.ERROR` the stream will only receive log records for the ERROR and FATAL levels.
+
+You add your stream to a logger by passing it in at construction time, or by adding it with the instance method `logger.addStream(stream)`. If your custom stream has an `init()` method, it will be called when the stream is added.
+
+Here is an example of a very simple text output stream:
+```js
+const { EOL } = require('os');
+const { Transform } = require('stream');
+const { createLogger, Logger, JSONStream } = require('kixx-logger');
+
+class MyOutputStream extends Transform {
+    constructor(options) {
+        super({ objectMode: true });
+        this.level = Logger.TRACE;
+    }
+
+    init() {
+        this.pipe(process.stdout);
+    }
+
+    _transform(record, encoding, callback) {
+        const { time, level, name, message } = record;
+        const timeString = time.toISOString();
+        const levelString = Logger.levelToString(level);
+        callback(`${timeString} ${name} ${levelString} ${message}${EOL}`);
+    }
+}
+
+// Using your stream at construction time means the default JSONStream will
+// not be used:
+const logger = createLogger({
+    streams: [new MyOutputStream()]
+});
+
+// You can use both the custom stream and the JSONStream at construction time:
+const logger = createLogger({
+    streams: [
+        new MyOutputStream(),
+        new JSONStream()
+    ]
+});
+
+// Or, add it later:
+logger.addStream(new MyOutputStream());
 ```
 
 
