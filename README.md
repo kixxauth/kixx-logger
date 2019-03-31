@@ -89,7 +89,7 @@ logger.fatal('crashing');
 // 09:07:16.261 FATAL root "crashing"
 ```
 
-## Create a Logger
+## Create Logger
 __createLogger()__ Create a new Logger instance with passed options. Shown passing the defaults here:
 ```js
 const { createLogger, Logger, serializers, fields, JSONStream } = require('kixx-logger');
@@ -355,6 +355,138 @@ const logger = createLogger({
 logger.addStream(new MyOutputStream());
 ```
 
+## Child Loggers
+Each logger can create child loggers, which are clones of itself, but can have a different name, fields, serializers, and even streams attached. You use `logger.create()` to create a child logger which inherits all the properties of the parent. `logger.create()` has the same signature as the top level `createLogger()` and takes the same options, except that it no longer accepts the `pretty` Boolean.
+
+The most common use case for this is to create different loggers for sub systems or classes within an application. Here is an example of a GitHub API client using a child logger. We start by creating a root logger at the application level.
+```js
+const { createLogger, Logger } = require('kixx-logger');
+
+class Application {
+    constructor(applicationName, environment) {
+        this.logger = createLogger({
+            name: applicationName,
+            level: environment === 'development' ? Logger.TRACE : Logger.INFO,
+            fields: { env: environment }
+        });
+    }
+}
+module.exports = Application;
+```
+
+Then create the sub component.
+```js
+class GitHubClient {
+    constructor(application) {
+        this.logger = application.logger.create({
+            name: 'GitHubClient'
+        });
+    }
+
+    makeRequest(endpoint, query) {
+        this.logger.info('make request', { endpoint, query });
+        // Implementation outside the scope of this example.
+    }
+}
+```
+
+## Reference
+See [Create Logger](#create-logger) above for the top level `createLogger()` factory and options.
+
+### Logger
+__Logger.TRACE__ The 'trace' log level Integer `10`;
+__Logger.DEBUG__ The 'debug' log level Integer `20`;
+__Logger.INFO__ The 'info' log level Integer `30`;
+__Logger.WARN__ The 'warn' log level Integer `40`;
+__Logger.ERROR__ The 'error' log level Integer `50`;
+__Logger.FATAL__ The 'fatal' log level Integer `60`;
+
+__Logger.levelToString(<int>)__ Convert a log level integer to a log level string.
+```js
+Logger.levelToString(Logger.INFO) === 'info';
+```
+
+### Logger Instance
+All log methods (trace, debug, info, log, warn, error, fatal) accept `message` and `obj` as parameters.
+
+- __message__ - If it is not a String, it will be coerced into a String.
+- __obj__ - Any Object. The own, enumerable keys will be assigned to the log record when it is emitted.
+
+#### trace(message, obj)
+Emit a log record at the trace level.
+#### debug(message, obj)
+Emit a log record at the debug level.
+#### info(message, obj)
+Emit a log record at the info level.
+#### log(message, obj)
+An alias to `info(message, obj)`.
+#### warn(message, obj)
+Emit a log record at the warn level.
+#### error(message, obj)
+Emit a log record at the error level.
+#### fatal(message, obj)
+Emit a log record at the fatal level.
+
+#### create(options)
+Create a child logger. Valid options are:
+
+- __options.name__ (default="root"): The name String of the logger. This will populate the `name` field on log output records.
+- __options.level__ (default=Logger.TRACE): A level Integer or String. This will control which log records are output. See [Log Levels](#log-levels) above.
+- __options.serializers__ (default=serializers): An Object of serializers which map to log record fields. See [Serializers](#serializers) above.
+- __options.fields__ (default=fields): An Object of values which should be included in log records by default. See [Fields](#fields) above.
+- __options.streams__ (default=Array<JSONStream>): An Array of Node.js writable Streams to use for log output. See [Streams](#streams) above.
+
+#### setLevel(level)
+Set the level of this logger and all of its child loggers recursively. The `level` parameter may be a valid log level String or log level Integer. See [Log Levels](#log-levels) above.
+```js
+const logger = createLogger({ level: Logger.INFO });
+const childLogger = logger.create({ name: 'child_logger' });
+logger.level === 30;
+childLogger.level === 30;
+
+logger.setLevel('error');
+logger.level === 50;
+childLogger.level === 50;
+```
+
+#### mergeFields(fields)
+Merge in default fields for this logger and all of its child loggers recursively. The `fields` parameter should be an Object where the top level, own, enumerable keys will be merged in as default fields. See [Fields](#fields) above.
+```js
+const logger = createLogger();
+const childLogger = logger.create({ name: 'child_logger' });
+logger.fields; // { hostname: 'foo.bar.baz', pid: 12345 }
+childLogger.fields; // { hostname: 'foo.bar.baz', pid: 12345 }
+
+logger.mergeFields({ env: 'stage' });
+logger.fields; // { hostname: 'foo.bar.baz', pid: 12345, env: 'stage' }
+childLogger.fields; // { hostname: 'foo.bar.baz', pid: 12345, env: 'stage' }
+```
+
+#### mergeSerializers(serializers)
+Merge in default serializers for this logger and all of its child loggers recursively. The `serializers` parameter should be an Object where the top level, own, enumerable keys will be merged in as serializers. See [Fields](#fields) above.
+```js
+const logger = createLogger();
+const childLogger = logger.create({ name: 'child_logger' });
+logger.serializers; // { err: [Function] }
+childLogger.serializers; // { err: [Function] }
+
+logger.mergeSerializers({ req: requestSerializer });
+logger.serializers; // { err: [Function], req: [Function] }
+childLogger.serializers; // { err: [Function], req: [Function] }
+```
+
+### addStream(stream)
+Append an output stream onto the streams list for this logger and all child loggers recursively. The `stream` parameter must be a Node.js Writable or Duplex Stream instance. See [Streams](#streams) above.
+```js
+const logger = createLogger();
+const childLogger = logger.create({ name: 'child_logger' });
+logger.streams; // [ JSONStream {} ]
+childLogger.streams; // [ JSONStream {} ]
+
+logger.addStream({ new OutputSream() });
+logger.streams; // [ JSONStream, OutputStream ]
+childLogger.streams; // [ JSONStream {}, OutputStream {} ]
+```
 
 Copyright and License
 ---------------------
