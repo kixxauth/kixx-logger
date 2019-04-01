@@ -96,7 +96,7 @@ const { createLogger, Logger, serializers, fields, JSONStream } = require('kixx-
 
 const logger = createLogger({
     name: 'root',
-    level: Logger.TRACE,
+    level: Logger.Levels.TRACE,
     serializers: {
         err: serializers.err
     },
@@ -113,11 +113,11 @@ const logger = createLogger({
 __createLogger(options)__
 
 - __options.name__ (default="root"): The name String of the logger. This will populate the `name` field on log output records.
-- __options.level__ (default=Logger.TRACE): A level Integer or String. This will control which log records are output. See [Log Levels](#log-levels) below.
+- __options.level__ (default=Logger.Levels.TRACE): A level Integer or String. This will control which log records are output. See [Log Levels](#log-levels) below.
 - __options.serializers__ (default=serializers): An Object of serializers which map to log record fields. See [Serializers](#serializers) below.
 - __options.fields__ (default=fields): An Object of values which should be included in log records by default. See [Fields](#fields) below.
 - __options.streams__ (default=Array<JSONStream>): An Array of Node.js writable Streams to use for log output. See [Streams](#streams) below.
-- __options.pretty__ (default=false): If true and the default streams are used then use the PrettyStream instead of the JSONStream. If you pass in your own streams Array, this option will not be used.
+- __options.pretty__ (default=false): If true and the default streams are used then use the PrettyStream instead of the JSONStream. If you pass in your own streams Array, this option will be ignored.
 
 ## Log Levels
 By default, a logger is set at the TRACE level, which means all of these will produce output:
@@ -137,29 +137,29 @@ logger.error('error message');
 logger.fatal('fatal message');
 ```
 
-Available levels are referenced as static properties on the Logger Object:
+Available levels are referenced on the static `Levels` property on the Logger Object:
 ```js
-Logger.TRACE; // 10
-Logger.DEBUG; // 20
-Logger.INFO; // 30
-Logger.WARN; // 40
-Logger.ERROR; // 50
-Logger.FATAL; // 60
+Logger.Levels.TRACE; // 10
+Logger.Levels.DEBUG; // 20
+Logger.Levels.INFO; // 30
+Logger.Levels.WARN; // 40
+Logger.Levels.ERROR; // 50
+Logger.Levels.FATAL; // 60
 
-Logger.levelToString(Logger.TRACE); // "TRACE"
-Logger.levelToString(Logger.DEBUG); // "DEBUG"
-Logger.levelToString(Logger.INFO); // "INFO"
-Logger.levelToString(Logger.WARN); // "WARN"
-Logger.levelToString(Logger.ERROR); // "ERROR"
-Logger.levelToString(Logger.FATAL); // "FATAL"
+Logger.levelToString(Logger.Levels.TRACE); // "TRACE"
+Logger.levelToString(Logger.Levels.DEBUG); // "DEBUG"
+Logger.levelToString(Logger.Levels.INFO); // "INFO"
+Logger.levelToString(Logger.Levels.WARN); // "WARN"
+Logger.levelToString(Logger.Levels.ERROR); // "ERROR"
+Logger.levelToString(Logger.Levels.FATAL); // "FATAL"
 
-logger.level === Logger.TRACE; // true
-logger.levelString === Logger.levelToString(Logger.TRACE); // true
+logger.level === Logger.Levels.TRACE; // true
+logger.levelString === Logger.levelToString(Logger.Levels.TRACE); // true
 ```
 
 At any point in your application you can change the log level for a logger.
 ```js
-logger.setLevel(Logger.WARN);
+logger.setLevel(Logger.Levels.WARN);
 
 logger.level; // 40
 logger.levelString; // 'WARN'
@@ -178,7 +178,7 @@ logger.fatal('fatal message');
 You can create a logger at a different level by passing `options.level`:
 ```js
 const logger = createLogger({
-    level: Logger.INFO
+    level: Logger.Levels.INFO
 });
 
 logger.level; // 30
@@ -256,7 +256,7 @@ server.listen();
 ## Fields
 Each log method (`trace()`, `debug()`, `info()`, `warn()`, `error()`, `fatal()`) emits a log record. A log record is made up of fields, which may be nested.
 
-Default fields added to every log record are:
+There are default fields added to every log record:
 
 - __name__ : The name String of the logger.
 - __hostname__ : The string derived from `require('os').hostname()`.
@@ -309,7 +309,7 @@ class MyOutputStream extends Writable {
 }
 ```
 
-You can set a `level` property on your stream, which will filter output to it to only that level and higher. So, for a stream set `stream.level = Logger.ERROR` the stream will only receive log records for the ERROR and FATAL levels.
+You can set a `level` property on your stream, which will filter it to only that level and higher. So, for a stream set `stream.level = Logger.Levels.ERROR` the stream will only receive log records for the ERROR and FATAL levels.
 
 You add your stream to a logger by passing it in at construction time, or by adding it with the instance method `logger.addStream(stream)`. If your custom stream has an `init()` method, it will be called when the stream is added.
 
@@ -322,7 +322,7 @@ const { createLogger, Logger, JSONStream } = require('kixx-logger');
 class MyOutputStream extends Transform {
     constructor(options) {
         super({ objectMode: true });
-        this.level = Logger.TRACE;
+        this.level = Logger.Levels.TRACE;
     }
 
     init() {
@@ -366,7 +366,7 @@ class Application {
     constructor(applicationName, environment) {
         this.logger = createLogger({
             name: applicationName,
-            level: environment === 'development' ? Logger.TRACE : Logger.INFO,
+            level: environment === 'development' ? Logger.Levels.TRACE : Logger.Levels.INFO,
             fields: { env: environment }
         });
     }
@@ -394,16 +394,16 @@ class GitHubClient {
 See [Create Logger](#create-logger) above for the top level `createLogger()` factory and options.
 
 ### Logger
-__Logger.TRACE__ The 'trace' log level Integer `10`;
-__Logger.DEBUG__ The 'debug' log level Integer `20`;
-__Logger.INFO__ The 'info' log level Integer `30`;
-__Logger.WARN__ The 'warn' log level Integer `40`;
-__Logger.ERROR__ The 'error' log level Integer `50`;
-__Logger.FATAL__ The 'fatal' log level Integer `60`;
+- __Logger.Levels.TRACE__ The 'trace' log level Integer `10`
+- __Logger.Levels.DEBUG__ The 'debug' log level Integer `20`
+- __Logger.Levels.INFO__ The 'info' log level Integer `30`
+- __Logger.Levels.WARN__ The 'warn' log level Integer `40`
+- __Logger.Levels.ERROR__ The 'error' log level Integer `50`
+- __Logger.Levels.FATAL__ The 'fatal' log level Integer `60`
 
 __Logger.levelToString(<int>)__ Convert a log level integer to a log level string.
 ```js
-Logger.levelToString(Logger.INFO) === 'info';
+Logger.levelToString(Logger.Levels.INFO) === 'info';
 ```
 
 ### Logger Instance
@@ -431,7 +431,7 @@ Emit a log record at the fatal level.
 Create a child logger. Valid options are:
 
 - __options.name__ (default="root"): The name String of the logger. This will populate the `name` field on log output records.
-- __options.level__ (default=Logger.TRACE): A level Integer or String. This will control which log records are output. See [Log Levels](#log-levels) above.
+- __options.level__ (default=Logger.Levels.TRACE): A level Integer or String. This will control which log records are output. See [Log Levels](#log-levels) above.
 - __options.serializers__ (default=serializers): An Object of serializers which map to log record fields. See [Serializers](#serializers) above.
 - __options.fields__ (default=fields): An Object of values which should be included in log records by default. See [Fields](#fields) above.
 - __options.streams__ (default=Array<JSONStream>): An Array of Node.js writable Streams to use for log output. See [Streams](#streams) above.
@@ -450,7 +450,7 @@ childLogger.level === 50;
 ```
 
 #### mergeFields(fields)
-Merge in default fields for this logger and all of its child loggers recursively. The `fields` parameter should be an Object where the top level, own, enumerable keys will be merged in as default fields. See [Fields](#fields) above.
+Merge in default fields for this logger and all of its child loggers recursively. The `fields` parameter should be an Object where the top level, own, enumerable properties will be merged in as default fields. See [Fields](#fields) above.
 ```js
 const logger = createLogger();
 const childLogger = logger.create({ name: 'child_logger' });
@@ -463,7 +463,7 @@ childLogger.fields; // { hostname: 'foo.bar.baz', pid: 12345, env: 'stage' }
 ```
 
 #### mergeSerializers(serializers)
-Merge in default serializers for this logger and all of its child loggers recursively. The `serializers` parameter should be an Object where the top level, own, enumerable keys will be merged in as serializers. See [Fields](#fields) above.
+Merge in default serializers for this logger and all of its child loggers recursively. The `serializers` parameter should be an Object where the top level, own, enumerable properties will be merged in as serializers. See [Fields](#fields) above.
 ```js
 const logger = createLogger();
 const childLogger = logger.create({ name: 'child_logger' });
@@ -475,8 +475,8 @@ logger.serializers; // { err: [Function], req: [Function] }
 childLogger.serializers; // { err: [Function], req: [Function] }
 ```
 
-### addStream(stream)
-Append an output stream onto the streams list for this logger and all child loggers recursively. The `stream` parameter must be a Node.js Writable or Duplex Stream instance. See [Streams](#streams) above.
+#### addStream(stream)
+Append an output stream onto the streams list for this logger and all child loggers recursively. The `stream` parameter must be a Node.js Writable or Duplex Stream instance. If the stream instance has an `init()` method, it will be called. See [Streams](#streams) above.
 ```js
 const logger = createLogger();
 const childLogger = logger.create({ name: 'child_logger' });
