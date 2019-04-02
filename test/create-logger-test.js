@@ -2,100 +2,124 @@
 
 const { assert } = require('kixx-assert');
 const os = require('os');
-const Sinon = require('sinon');
+const sinon = require('sinon');
 
 const {
 	Logger,
 	createLogger,
-	streams } = require('../');
+	streams,
+	serializers } = require('../');
 
-const { EOL } = os;
-
-function delay(ms) {
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			resolve(null);
-		}, ms);
-	});
-}
 
 module.exports = (t) => {
+
+	function noop() {
+	}
+
 	t.describe('with defaults', (t1) => {
-		const sandbox = Sinon.createSandbox();
 		let logger;
+		let stream;
 
 		t1.before((done) => {
-			sandbox.stub(process.stdout, 'write').callsFake(() => {});
-
 			logger = createLogger();
+
+			assert.isEqual(logger.streams.length, 1);
+
+			stream = logger.streams[0];
+
+			sinon.stub(stream, '_transform').callsFake(noop);
 
 			logger.trace('trace level message');
 			logger.debug('default fields');
-			logger.info('additional fields', { err: new Error('test serializer') });
+			logger.info('with extra properties', { foo: 'bar', baz: { a: 'z' } });
+			logger.warn('yellow and orange');
+			logger.error('with an error', { err: new Error('test serializer') });
+			logger.fatal('i quit');
 
-			// Introduce some delay to catch the async call.
-			return delay(10).then(done);
-		});
-
-		t1.after((done) => {
-			sandbox.restore();
 			done();
 		});
 
 		t1.it('has default level', () => {
-			assert.isNonEmptyString(logger.level);
-			assert.isEqual(Logger.DEBUG, logger.level);
+			assert.isEqual(Logger.Levels.DEBUG, logger.level);
 
-			assert.isEqual(2, process.stdout.write.callCount);
+			assert.isEqual(6, stream._transform.callCount);
 
-			const calls = process.stdout.write.getCalls();
+			const levels = stream._transform.getCalls().map((call) => {
+				return call.args[0].level;
+			});
 
-			const level1 = calls[0].args[0].split(' - ')[1];
-			const level2 = calls[1].args[0].split(' - ')[1];
-
-			assert.isEqual('DEBUG (20)', level1);
-			assert.isEqual('INFO (30)', level2);
+			assert.isEqual(levels[0], Logger.Levels.TRACE);
+			assert.isEqual(levels[1], Logger.Levels.DEBUG);
+			assert.isEqual(levels[2], Logger.Levels.INFO);
+			assert.isEqual(levels[3], Logger.Levels.WARN);
+			assert.isEqual(levels[4], Logger.Levels.ERROR);
+			assert.isEqual(levels[5], Logger.Levels.FATAL);
 		});
 
 		t1.it('has default name', () => {
 			assert.isEqual('root', logger.fields.name);
 
-			assert.isEqual(2, process.stdout.write.callCount);
+			assert.isEqual(6, stream._transform.callCount);
 
-			const calls = process.stdout.write.getCalls();
+			const names = stream._transform.getCalls().map((call) => {
+				return call.args[0].name;
+			});
 
-			const name1 = calls[0].args[0].split(' - ')[2];
-			const name2 = calls[1].args[0].split(' - ')[2];
-
-			assert.isEqual('root', name1);
-			assert.isEqual('root', name2);
+			names.forEach((name) => {
+				assert.isEqual('root', name);
+			});
 		});
 
 		t1.it('has default hostname', () => {
-			assert.isNonEmptyString(logger.fields.hostname);
-			assert.isEqual(os.hostname(), logger.fields.hostname);
+			const hostname = os.hostname();
+			assert.isEqual(hostname, logger.fields.hostname);
+
+			assert.isEqual(6, stream._transform.callCount);
+
+			const hostnames = stream._transform.getCalls().map((call) => {
+				return call.args[0].hostnames;
+			});
+
+			hostnames.forEach((name) => {
+				assert.isEqual(hostname, name);
+			});
 		});
 
 		t1.it('has default pid', () => {
-			assert.isDefined(logger.fields.pid);
-			assert.isEqual(process.pid, logger.fields.pid);
+			const pid = process.pid;
+			assert.isNonEmptyString(pid, 'process.pid is a string');
+			assert.isEqual(pid, logger.fields.pid);
+
+			assert.isEqual(6, stream._transform.callCount);
+
+			const pids = stream._transform.getCalls().map((call) => {
+				return call.args[0].pid;
+			});
+
+			pids.forEach((thisPid) => {
+				assert.isEqual(pid, thisPid);
+			});
 		});
 
 		t1.it('has default stream', () => {
 			assert.isEqual(1, logger.streams.length);
-			const [ stream ] = logger.streams;
-			assert.isOk(stream instanceof streams.JsonStdout);
+			const [ thisStream ] = logger.streams;
+			assert.isOk(thisStream instanceof streams.JsonStdout);
 		});
 
 		t1.it('has default serializers', () => {
-			const call = process.stdout.write.getCall(1);
-
-			const lines = call.args[0].split(EOL);
-
-			assert.isEqual('{ err: ', lines[1]);
-			assert.isEqual("   { name: 'Error',", lines[2]); // eslint-disable-line quotes
-			assert.isEqual('     code: undefined,', lines[3]);
-			assert.isOk(lines[4].startsWith("     stack: 'Error: test serializer")); // eslint-disable-line quotes
+			assert.isEqual(1, Object.keys(stream.serializers).length);
+			assert.isEqual('function', typeof stream.serializers.err);
+			assert.isEqual(serializers.err, stream.serializers.err);
+			assert.isEqual(6, stream._transform.callCount);
+			const call = stream._transform.getCall(4);
+			const [ record ] = call.args;
+			const keys = Object.keys(record.err);
+			assert.isEqual(4, keys.length);
+			assert.isOk(keys.includes('name'));
+			assert.isOk(keys.includes('message'));
+			assert.isOk(keys.includes('code'));
+			assert.isOk(keys.includes('stack'));
 		});
 	});
 
