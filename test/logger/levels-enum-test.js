@@ -10,7 +10,7 @@ module.exports = (test) => {
 		let desc;
 
 		t.before((done) => {
-			desc = Object.getOwnPropertyDescriptor(logger, 'Levels');
+			desc = Object.getOwnPropertyDescriptor(Logger, 'Levels');
 			done();
 		});
 

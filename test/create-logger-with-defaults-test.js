@@ -24,8 +24,8 @@ module.exports = (test) => {
 		let logger;
 		let stream;
 		const err = {};
-		const hostname = os.hostname();
-		const { pid } = process;
+		const HOSTNAME = os.hostname();
+		const PID = process.pid;
 
 		t.before((done) => {
 			Object.keys(serializers).forEach((key) => {
@@ -45,7 +45,7 @@ module.exports = (test) => {
 
 			logger.trace('trace level message');
 			logger.debug('default fields');
-			logger.info('with extra properties', { foo: 'bar', baz: { a: 'z' } });
+			logger.info('with extra properties');
 			logger.warn('yellow and orange');
 			logger.error('with an error', { err });
 			logger.fatal('i quit');
@@ -87,12 +87,12 @@ module.exports = (test) => {
 		});
 
 		t.it('has default hostname', () => {
-			assert.isEqual(hostname, logger.fields.hostname);
+			assert.isEqual(HOSTNAME, logger.fields.hostname);
 		});
 
 		t.it('has default pid', () => {
-			assert.isNonEmptyString(pid, 'process.pid is a string');
-			assert.isEqual(pid, logger.fields.pid);
+			assert.isNotEmpty(PID);
+			assert.isEqual(PID, logger.fields.pid);
 		});
 
 		t.it('has default stream', () => {
@@ -140,8 +140,10 @@ module.exports = (test) => {
 
 			assert.isEqual(6, hostnames.length);
 
-			hostnames.forEach((name) => {
-				assert.isEqual(hostname, name);
+			assert.isNonEmptyString(HOSTNAME);
+
+			hostnames.forEach((hostname) => {
+				assert.isEqual(HOSTNAME, hostname);
 			});
 		});
 
@@ -152,8 +154,10 @@ module.exports = (test) => {
 
 			assert.isEqual(6, pids.length);
 
-			pids.forEach((thisPid) => {
-				assert.isEqual(pid, thisPid);
+			assert.isNotEmpty(PID);
+
+			pids.forEach((pid) => {
+				assert.isEqual(PID, pid);
 			});
 		});
 
