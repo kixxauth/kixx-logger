@@ -490,7 +490,7 @@ childLogger.streams; // [ JSONStream {}, OutputStream {} ]
 
 Copyright and License
 ---------------------
-Copyright: (c) 2017 - 2019 by Kris Walker (www.kixx.name)
+Copyright: (c) 2017 - 2022 by Kris Walker <kris@kixx.name>
 
 Unless otherwise indicated, all source code is licensed under the MIT license. See MIT-LICENSE for details.
 

@@ -11,24 +11,18 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
-			const defaultFields = {
-				foo: 'bar'
-			};
+			const defaultFields = { foo: 'bar' };
 
-			const additionalFields = {
-				bar: 'foo'
-			};
+			const additionalFields = { bar: 'foo' };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 
 				subject = Logger.create({
 					stream,
-					defaultFields
+					defaultFields,
 				});
 
 				subject.assignDefaultFields(additionalFields);
@@ -65,24 +59,18 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
-			const defaultFields = {
-				foo: 'bar'
-			};
+			const defaultFields = { foo: 'bar' };
 
-			const additionalFields = {
-				bar: 'foo'
-			};
+			const additionalFields = { bar: 'foo' };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 
 				const parent = Logger.create({
 					stream,
-					defaultFields
+					defaultFields,
 				});
 
 				subject = parent.create('My Logger');
@@ -121,24 +109,18 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
-			const defaultFields = {
-				foo: 'bar'
-			};
+			const defaultFields = { foo: 'bar' };
 
-			const additionalFields = {
-				bar: 'foo'
-			};
+			const additionalFields = { bar: 'foo' };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 
 				const grandParent = Logger.create({
 					stream,
-					defaultFields
+					defaultFields,
 				});
 
 				const parent = grandParent.create('Parent Logger');

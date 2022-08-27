@@ -8,14 +8,12 @@ module.exports = (t) => {
 	t.describe('emitted log record', (t1) => {
 		const sandbox = Sinon.createSandbox();
 
-		const stream = {
-			write() {}
-		};
+		const stream = { write() {} };
 
 		const defaultFields = {
 			msg: 'default message',
 			hostname: 'My Hostname',
-			foo: 'foo'
+			foo: 'foo',
 		};
 
 		const serializers = {
@@ -27,7 +25,7 @@ module.exports = (t) => {
 			},
 			time(x) {
 				return x.getFullYear();
-			}
+			},
 		};
 
 		const LEVELS = [
@@ -36,7 +34,7 @@ module.exports = (t) => {
 			[ Logger.INFO, 30 ],
 			[ Logger.WARN, 40 ],
 			[ Logger.ERROR, 50 ],
-			[ Logger.FATAL, 60 ]
+			[ Logger.FATAL, 60 ],
 		];
 
 		t1.before((done) => {
@@ -46,7 +44,7 @@ module.exports = (t) => {
 				level: Logger.TRACE,
 				defaultFields,
 				serializers,
-				stream
+				stream,
 			});
 
 			logger.trace('trace message', { foo: 'bar', name: 'bozo' });
@@ -79,7 +77,7 @@ module.exports = (t) => {
 				assert.isEqual('bozo', rec.name);
 				assert.isNumberNotNaN(rec.level);
 				assert.isEqual(levelN, rec.level);
-				assert.isEqual(`${levelS} message`, rec.msg);
+				assert.isEqual(`${ levelS } message`, rec.msg);
 				assert.isEqual('My Hostname', rec.hostname);
 				assert.isEqual(new Date().getFullYear(), rec.time);
 				assert.isEqual('BAR', rec.foo);
@@ -93,27 +91,27 @@ module.exports = (t) => {
 
 		const traceStream = {
 			level: Logger.TRACE,
-			write() {}
+			write() {},
 		};
 		const debugStream = {
 			level: Logger.DEBUG,
-			write() {}
+			write() {},
 		};
 		const infoStream = {
 			level: Logger.INFO,
-			write() {}
+			write() {},
 		};
 		const warnStream = {
 			level: Logger.WARN,
-			write() {}
+			write() {},
 		};
 		const errorStream = {
 			level: Logger.ERROR,
-			write() {}
+			write() {},
 		};
 		const fatalStream = {
 			level: Logger.FATAL,
-			write() {}
+			write() {},
 		};
 
 		t1.before((done) => {
@@ -124,9 +122,7 @@ module.exports = (t) => {
 			sandbox.stub(errorStream, 'write');
 			sandbox.stub(fatalStream, 'write');
 
-			const logger = Logger.create({
-				level: Logger.TRACE
-			});
+			const logger = Logger.create({ level: Logger.TRACE });
 
 			logger.addStream(traceStream);
 			logger.addStream(debugStream);
@@ -164,15 +160,13 @@ module.exports = (t) => {
 		t1.describe('at TRACE level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.TRACE,
-					stream
+					stream,
 				});
 				logger.trace('message', { foo: 'bar' });
 				done();
@@ -196,15 +190,13 @@ module.exports = (t) => {
 		t1.describe('at DEBUG level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.DEBUG,
-					stream
+					stream,
 				});
 				logger.trace('message', { foo: 'bar' });
 				done();
@@ -223,15 +215,13 @@ module.exports = (t) => {
 		t1.describe('at INFO level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.INFO,
-					stream
+					stream,
 				});
 				logger.trace('message', { foo: 'bar' });
 				done();
@@ -250,15 +240,13 @@ module.exports = (t) => {
 		t1.describe('at WARN level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.WARN,
-					stream
+					stream,
 				});
 				logger.trace('message', { foo: 'bar' });
 				done();
@@ -277,15 +265,13 @@ module.exports = (t) => {
 		t1.describe('at ERROR level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.ERROR,
-					stream
+					stream,
 				});
 				logger.trace('message', { foo: 'bar' });
 				done();
@@ -304,15 +290,13 @@ module.exports = (t) => {
 		t1.describe('at FATAL level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.FATAL,
-					stream
+					stream,
 				});
 				logger.trace('message', { foo: 'bar' });
 				done();
@@ -333,15 +317,13 @@ module.exports = (t) => {
 		t1.describe('at TRACE level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.TRACE,
-					stream
+					stream,
 				});
 				logger.debug('message', { foo: 'bar' });
 				done();
@@ -365,15 +347,13 @@ module.exports = (t) => {
 		t1.describe('at DEBUG level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.DEBUG,
-					stream
+					stream,
 				});
 				logger.debug('message', { foo: 'bar' });
 				done();
@@ -397,15 +377,13 @@ module.exports = (t) => {
 		t1.describe('at INFO level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.INFO,
-					stream
+					stream,
 				});
 				logger.debug('message', { foo: 'bar' });
 				done();
@@ -424,15 +402,13 @@ module.exports = (t) => {
 		t1.describe('at WARN level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.WARN,
-					stream
+					stream,
 				});
 				logger.debug('message', { foo: 'bar' });
 				done();
@@ -451,15 +427,13 @@ module.exports = (t) => {
 		t1.describe('at ERROR level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.ERROR,
-					stream
+					stream,
 				});
 				logger.debug('message', { foo: 'bar' });
 				done();
@@ -478,15 +452,13 @@ module.exports = (t) => {
 		t1.describe('at FATAL level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.FATAL,
-					stream
+					stream,
 				});
 				logger.debug('message', { foo: 'bar' });
 				done();
@@ -507,15 +479,13 @@ module.exports = (t) => {
 		t1.describe('at TRACE level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.TRACE,
-					stream
+					stream,
 				});
 				logger.info('message', { foo: 'bar' });
 				done();
@@ -539,15 +509,13 @@ module.exports = (t) => {
 		t1.describe('at DEBUG level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.DEBUG,
-					stream
+					stream,
 				});
 				logger.info('message', { foo: 'bar' });
 				done();
@@ -571,15 +539,13 @@ module.exports = (t) => {
 		t1.describe('at INFO level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.INFO,
-					stream
+					stream,
 				});
 				logger.info('message', { foo: 'bar' });
 				done();
@@ -603,15 +569,13 @@ module.exports = (t) => {
 		t1.describe('at WARN level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.WARN,
-					stream
+					stream,
 				});
 				logger.info('message', { foo: 'bar' });
 				done();
@@ -630,15 +594,13 @@ module.exports = (t) => {
 		t1.describe('at ERROR level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.ERROR,
-					stream
+					stream,
 				});
 				logger.info('message', { foo: 'bar' });
 				done();
@@ -657,15 +619,13 @@ module.exports = (t) => {
 		t1.describe('at FATAL level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.FATAL,
-					stream
+					stream,
 				});
 				logger.info('message', { foo: 'bar' });
 				done();
@@ -686,15 +646,13 @@ module.exports = (t) => {
 		t1.describe('at TRACE level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.TRACE,
-					stream
+					stream,
 				});
 				logger.warn('message', { foo: 'bar' });
 				done();
@@ -718,15 +676,13 @@ module.exports = (t) => {
 		t1.describe('at DEBUG level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.DEBUG,
-					stream
+					stream,
 				});
 				logger.warn('message', { foo: 'bar' });
 				done();
@@ -750,15 +706,13 @@ module.exports = (t) => {
 		t1.describe('at INFO level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.INFO,
-					stream
+					stream,
 				});
 				logger.warn('message', { foo: 'bar' });
 				done();
@@ -782,15 +736,13 @@ module.exports = (t) => {
 		t1.describe('at WARN level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.WARN,
-					stream
+					stream,
 				});
 				logger.warn('message', { foo: 'bar' });
 				done();
@@ -814,15 +766,13 @@ module.exports = (t) => {
 		t1.describe('at ERROR level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.ERROR,
-					stream
+					stream,
 				});
 				logger.warn('message', { foo: 'bar' });
 				done();
@@ -841,15 +791,13 @@ module.exports = (t) => {
 		t1.describe('at FATAL level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.FATAL,
-					stream
+					stream,
 				});
 				logger.warn('message', { foo: 'bar' });
 				done();
@@ -870,15 +818,13 @@ module.exports = (t) => {
 		t1.describe('at TRACE level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.TRACE,
-					stream
+					stream,
 				});
 				logger.error('message', { foo: 'bar' });
 				done();
@@ -902,15 +848,13 @@ module.exports = (t) => {
 		t1.describe('at DEBUG level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.DEBUG,
-					stream
+					stream,
 				});
 				logger.error('message', { foo: 'bar' });
 				done();
@@ -934,15 +878,13 @@ module.exports = (t) => {
 		t1.describe('at INFO level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.INFO,
-					stream
+					stream,
 				});
 				logger.error('message', { foo: 'bar' });
 				done();
@@ -966,15 +908,13 @@ module.exports = (t) => {
 		t1.describe('at WARN level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.WARN,
-					stream
+					stream,
 				});
 				logger.error('message', { foo: 'bar' });
 				done();
@@ -998,15 +938,13 @@ module.exports = (t) => {
 		t1.describe('at ERROR level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.ERROR,
-					stream
+					stream,
 				});
 				logger.error('message', { foo: 'bar' });
 				done();
@@ -1030,15 +968,13 @@ module.exports = (t) => {
 		t1.describe('at FATAL level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.FATAL,
-					stream
+					stream,
 				});
 				logger.error('message', { foo: 'bar' });
 				done();
@@ -1059,15 +995,13 @@ module.exports = (t) => {
 		t1.describe('at TRACE level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.TRACE,
-					stream
+					stream,
 				});
 				logger.fatal('message', { foo: 'bar' });
 				done();
@@ -1091,15 +1025,13 @@ module.exports = (t) => {
 		t1.describe('at DEBUG level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.DEBUG,
-					stream
+					stream,
 				});
 				logger.fatal('message', { foo: 'bar' });
 				done();
@@ -1123,15 +1055,13 @@ module.exports = (t) => {
 		t1.describe('at INFO level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.INFO,
-					stream
+					stream,
 				});
 				logger.fatal('message', { foo: 'bar' });
 				done();
@@ -1155,15 +1085,13 @@ module.exports = (t) => {
 		t1.describe('at WARN level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.WARN,
-					stream
+					stream,
 				});
 				logger.fatal('message', { foo: 'bar' });
 				done();
@@ -1187,15 +1115,13 @@ module.exports = (t) => {
 		t1.describe('at ERROR level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.ERROR,
-					stream
+					stream,
 				});
 				logger.fatal('message', { foo: 'bar' });
 				done();
@@ -1219,15 +1145,13 @@ module.exports = (t) => {
 		t1.describe('at FATAL level', (t2) => {
 			const sandbox = Sinon.createSandbox();
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 				const logger = Logger.create({
 					level: Logger.FATAL,
-					stream
+					stream,
 				});
 				logger.fatal('message', { foo: 'bar' });
 				done();

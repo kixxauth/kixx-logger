@@ -11,9 +11,7 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
@@ -82,9 +80,7 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
@@ -150,9 +146,7 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
@@ -195,9 +189,7 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');

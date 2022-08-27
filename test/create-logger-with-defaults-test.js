@@ -8,7 +8,8 @@ const {
 	Logger,
 	createLogger,
 	streams,
-	serializers } = require('../');
+	serializers,
+} = require('../');
 
 module.exports = (test) => {
 

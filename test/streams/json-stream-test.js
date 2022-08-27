@@ -28,39 +28,25 @@ module.exports = (t) => {
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({
-				streams: [ streams.JSONStream.create() ]
-			});
+			const logger = Logger.create({ streams: [ streams.JsonStdout.create() ] });
 
 			logger.trace('default fields');
-			logger.trace('additional fields', {
-				foo: [ { bar: 'baz' }, 1, false ]
-			});
+			logger.trace('additional fields', { foo: [{ bar: 'baz' }, 1, false ] });
 
 			logger.debug('default fields');
-			logger.debug('additional fields', {
-				foo: [ { bar: 'baz' }, 1, false ]
-			});
+			logger.debug('additional fields', { foo: [{ bar: 'baz' }, 1, false ] });
 
 			logger.info('default fields');
-			logger.info('additional fields', {
-				foo: [ { bar: 'baz' }, 1, false ]
-			});
+			logger.info('additional fields', { foo: [{ bar: 'baz' }, 1, false ] });
 
 			logger.warn('default fields');
-			logger.warn('additional fields', {
-				foo: [ { bar: 'baz' }, 1, false ]
-			});
+			logger.warn('additional fields', { foo: [{ bar: 'baz' }, 1, false ] });
 
 			logger.error('default fields');
-			logger.error('additional fields', {
-				foo: [ { bar: 'baz' }, 1, false ]
-			});
+			logger.error('additional fields', { foo: [{ bar: 'baz' }, 1, false ] });
 
 			logger.fatal('default fields');
-			logger.fatal('additional fields', {
-				foo: [ { bar: 'baz' }, 1, false ]
-			});
+			logger.fatal('additional fields', { foo: [{ bar: 'baz' }, 1, false ] });
 
 			// Introduce some delay to catch the async call.
 			return delay(60).then(done);
@@ -76,7 +62,9 @@ module.exports = (t) => {
 		});
 
 		t1.it('writes expected output strings', () => {
-			const args = process.stdout.write.getCalls().map((call) => call.args[0]);
+			const args = process.stdout.write.getCalls().map((call) => {
+				return call.args[0];
+			});
 
 			const levels = [
 				Logger.Levels.TRACE,
@@ -121,13 +109,11 @@ module.exports = (t) => {
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({
-				streams: [ streams.JSONStream.create() ]
-			});
+			const logger = Logger.create({ streams: [ streams.JsonStdout.create() ] });
 
 			const myObject = {
 				foo: 'bar',
-				bar: 'baz'
+				bar: 'baz',
 			};
 
 			myObject.circ = myObject;
@@ -151,8 +137,8 @@ module.exports = (t) => {
 			const { args } = process.stdout.write.firstCall;
 			assert.isOk(args[0].endsWith(EOL));
 			const { hostname, pid, time } = JSON.parse(args[0].trim());
-			const firstPart = `{"name":"${DEFAULT_NAME}","hostname":"${hostname}","pid":${pid},"time":"${time}","level":30,"msg":"circular fields"`;
-			assert.isEqual(`${firstPart},"foo":"bar","bar":"baz","circ":{"foo":"bar","bar":"baz","circ":"[Circular]"}}${EOL}`, args[0]);
+			const firstPart = `{"name":"${ DEFAULT_NAME }","hostname":"${ hostname }","pid":${ pid },"time":"${ time }","level":30,"msg":"circular fields"`;
+			assert.isEqual(`${ firstPart },"foo":"bar","bar":"baz","circ":{"foo":"bar","bar":"baz","circ":"[Circular]"}}${ EOL }`, args[0]);
 		});
 	});
 };

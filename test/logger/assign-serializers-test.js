@@ -11,9 +11,7 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
@@ -23,8 +21,8 @@ module.exports = (t) => {
 					defaultSerializers: {
 						foo() {
 							return 'foo';
-						}
-					}
+						},
+					},
 				});
 
 				subject.assignSerializers({
@@ -33,7 +31,7 @@ module.exports = (t) => {
 					},
 					bar() {
 						return 'bar';
-					}
+					},
 				});
 
 				subject.debug('debug message', { foo: 1, bar: 1 });
@@ -62,9 +60,7 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
@@ -74,8 +70,8 @@ module.exports = (t) => {
 					defaultSerializers: {
 						foo() {
 							return 'foo';
-						}
-					}
+						},
+					},
 				});
 
 				subject = parent.create('My Logger');
@@ -86,7 +82,7 @@ module.exports = (t) => {
 					},
 					bar() {
 						return 'bar';
-					}
+					},
 				});
 
 				subject.debug('debug message', { foo: 1, bar: 1 });
@@ -115,9 +111,7 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
@@ -127,8 +121,8 @@ module.exports = (t) => {
 					defaultSerializers: {
 						foo() {
 							return 'foo';
-						}
-					}
+						},
+					},
 				});
 
 				const parent = grandParent.create('Parent Logger');
@@ -141,7 +135,7 @@ module.exports = (t) => {
 					},
 					bar() {
 						return 'bar';
-					}
+					},
 				});
 
 				subject.debug('debug message', { foo: 1, bar: 1 });

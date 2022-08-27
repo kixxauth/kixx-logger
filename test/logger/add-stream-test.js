@@ -11,16 +11,12 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				write() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 
-				subject = Logger.create({
-					level: Logger.TRACE
-				});
+				subject = Logger.create({ level: Logger.TRACE });
 
 				subject.addStream(stream);
 
@@ -63,9 +59,7 @@ module.exports = (t) => {
 
 			let subject;
 
-			const stream = {
-				init() {}
-			};
+			const stream = { write() {} };
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'init');
@@ -95,15 +89,13 @@ module.exports = (t) => {
 
 			const stream = {
 				level: Logger.ERROR,
-				write() {}
+				write() {},
 			};
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 
-				subject = Logger.create({
-					level: Logger.TRACE
-				});
+				subject = Logger.create({ level: Logger.TRACE });
 
 				subject.addStream(stream);
 
@@ -140,15 +132,13 @@ module.exports = (t) => {
 
 			const stream = {
 				level: Logger.ERROR,
-				write() {}
+				write() {},
 			};
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'write');
 
-				const parent = Logger.create({
-					level: Logger.TRACE
-				});
+				const parent = Logger.create({ level: Logger.TRACE });
 
 				subject = parent.create('My Logger');
 
@@ -188,16 +178,14 @@ module.exports = (t) => {
 			const stream = {
 				level: Logger.ERROR,
 				init() {},
-				write() {}
+				write() {},
 			};
 
 			t2.before((done) => {
 				sandbox.stub(stream, 'init');
 				sandbox.stub(stream, 'write');
 
-				const grandParent = Logger.create({
-					level: Logger.TRACE
-				});
+				const grandParent = Logger.create({ level: Logger.TRACE });
 
 				const parent = grandParent.create('Parent Logger');
 
@@ -242,7 +230,7 @@ module.exports = (t) => {
 
 			const stream = {
 				init() {},
-				write() {}
+				write() {},
 			};
 
 			t2.before((done) => {
@@ -251,7 +239,7 @@ module.exports = (t) => {
 
 				subject = Logger.create({
 					level: Logger.TRACE,
-					stream
+					stream,
 				});
 
 				subject.addStream(stream);

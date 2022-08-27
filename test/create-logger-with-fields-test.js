@@ -19,11 +19,13 @@ module.exports = (test) => {
 		const FOO = { foo: 'bar' };
 
 		t.before((done) => {
-			logger = createLogger({ fields: {
-				name: 'foobar',
-				hostname: HOSTNAME,
-				foo: FOO
-			} });
+			logger = createLogger({
+				fields: {
+					name: 'foobar',
+					hostname: HOSTNAME,
+					foo: FOO,
+				},
+			});
 
 			assert.isEqual(1, logger.streams.length);
 			stream = logger.streams[0];

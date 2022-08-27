@@ -1,6 +1,6 @@
 {
   "name": "kixx-logger",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A logger for Node.js",
   "files": [
     "lib/**",
@@ -18,16 +18,16 @@
   "keywords": [
     "logger"
   ],
-  "author": "Kris Walker (www.kixx.name)",
+  "author": "Kris Walker <kris@kixx.name>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kixxauth/kixx-logger/issues"
   },
   "homepage": "https://github.com/kixxauth/kixx-logger#readme",
   "devDependencies": {
-    "eslint": "5.16.0",
-    "kixx-assert": "1.0.5",
-    "kixx-test-node": "1.4.0",
-    "sinon": "7.3.1"
+    "eslint": "8.23.0",
+    "kixx-assert": "~1.0.6",
+    "kixx-test-node": "~1.4.3",
+    "sinon": "14.0.0"
   }
 }

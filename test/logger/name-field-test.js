@@ -14,17 +14,13 @@ module.exports = (t) => {
 
 		let logger;
 
-		const stream = {
-			write: sinon.spy()
-		};
+		const stream = { write: sinon.spy() };
 
 		t1.before((done) => {
 			logger = Logger.create({
 				name: NAME,
-				fields: {
-					name: 'Another Name'
-				},
-				streams: [ stream ]
+				fields: { name: 'Another Name' },
+				streams: [ stream ],
 			});
 
 			logger.trace(MSG);
@@ -62,16 +58,12 @@ module.exports = (t) => {
 	t.describe('Logger without name prop', (t1) => {
 		let logger;
 
-		const stream = {
-			write: sinon.spy()
-		};
+		const stream = { write: sinon.spy() };
 
 		t1.before((done) => {
 			logger = Logger.create({
-				fields: {
-					name: 'Another Name'
-				},
-				streams: [ stream ]
+				fields: { name: 'Another Name' },
+				streams: [ stream ],
 			});
 
 			logger.trace(MSG);
