@@ -37,8 +37,8 @@ module.exports = (t) => {
 			});
 
 			t2.it('should set the appropriate level string', () => {
-				assert.isNonEmptyString(Logger.ERROR);
-				assert.isEqual(Logger.ERROR, subject.level);
+				assert.isNonEmptyString(Logger.Levels.ERROR);
+				assert.isEqual(Logger.Levels.ERROR, subject.level);
 			});
 
 			t2.it('should emit only appropriate levels', () => {
@@ -96,8 +96,8 @@ module.exports = (t) => {
 			});
 
 			t2.it('should set the appropriate level string', () => {
-				assert.isNonEmptyString(Logger.ERROR);
-				assert.isEqual(Logger.ERROR, subject.level);
+				assert.isNonEmptyString(Logger.Levels.ERROR);
+				assert.isEqual(Logger.Levels.ERROR, subject.level);
 			});
 
 			t2.it('should emit only appropriate levels', () => {
@@ -152,7 +152,7 @@ module.exports = (t) => {
 				sandbox.stub(stream, 'write');
 				const parent = Logger.create({ stream });
 				subject = parent.create('My Logger');
-				parent.setLevel(Logger.ERROR);
+				parent.setLevel(Logger.Levels.ERROR);
 				done();
 			});
 
@@ -162,8 +162,8 @@ module.exports = (t) => {
 			});
 
 			t2.it('should set the appropriate level string', () => {
-				assert.isNonEmptyString(Logger.ERROR);
-				assert.isEqual(Logger.ERROR, subject.level);
+				assert.isNonEmptyString(Logger.Levels.ERROR);
+				assert.isEqual(Logger.Levels.ERROR, subject.level);
 			});
 
 			t2.it('should emit only appropriate levels', () => {
@@ -199,7 +199,7 @@ module.exports = (t) => {
 
 				subject = parent.create('Child Logger');
 
-				grandParent.setLevel(Logger.ERROR);
+				grandParent.setLevel(Logger.Levels.ERROR);
 
 				done();
 			});
@@ -210,8 +210,8 @@ module.exports = (t) => {
 			});
 
 			t2.it('should set the appropriate level string', () => {
-				assert.isNonEmptyString(Logger.ERROR);
-				assert.isEqual(Logger.ERROR, subject.level);
+				assert.isNonEmptyString(Logger.Levels.ERROR);
+				assert.isEqual(Logger.Levels.ERROR, subject.level);
 			});
 
 			t2.it('should emit only appropriate levels', () => {

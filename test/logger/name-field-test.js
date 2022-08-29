@@ -19,8 +19,9 @@ module.exports = (t) => {
 		t1.before((done) => {
 			logger = Logger.create({
 				name: NAME,
+				level: Logger.Levels.TRACE,
 				fields: { name: 'Another Name' },
-				streams: [ stream ],
+				stream,
 			});
 
 			logger.trace(MSG);
@@ -39,7 +40,7 @@ module.exports = (t) => {
 		});
 
 		t1.it('attaches the given name to the default fields', () => {
-			assert.isEqual(NAME, logger.fields.name);
+			assert.isEqual(NAME, logger.defaultFields.name);
 		});
 
 		t1.it('uses the given name in log records', () => {
@@ -62,8 +63,9 @@ module.exports = (t) => {
 
 		t1.before((done) => {
 			logger = Logger.create({
+				level: Logger.Levels.TRACE,
 				fields: { name: 'Another Name' },
-				streams: [ stream ],
+				stream,
 			});
 
 			logger.trace(MSG);
@@ -81,11 +83,11 @@ module.exports = (t) => {
 			done();
 		});
 
-		t1.it('fields.name is undefined', () => {
-			assert.isUndefined(logger.fields.name);
+		t1.it('defaultFields.name uses "root" by default', () => {
+			assert.isEqual('root', logger.defaultFields.name);
 		});
 
-		t1.it('log records name field is undefined', () => {
+		t1.it('log records name field uses "root" by default', () => {
 			const names = stream.write.getCalls().map((call) => {
 				return call.args[0].name;
 			});
@@ -93,7 +95,7 @@ module.exports = (t) => {
 			assert.isEqual(6, names.length);
 
 			names.forEach((name) => {
-				assert.isUndefined(name);
+				assert.isEqual('root', name);
 			});
 		});
 	});
