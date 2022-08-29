@@ -3,6 +3,7 @@
 const os = require('os');
 const { assert } = require('kixx-assert');
 const { MockStream } = require('../test-utils');
+const ArgumentError = require('../../lib/errors/argument-error');
 const { Logger, streams } = require('../../');
 
 const { Errors } = Logger;
@@ -113,5 +114,19 @@ module.exports = function runTests(test) {
 
 			assert.isOk(didThrow, 'threw the expected error');
 		});
+	});
+
+	test.it('has static Logger.Levels object', () => {
+		assert.isEqual('trace', Logger.Levels.TRACE);
+		assert.isEqual('debug', Logger.Levels.DEBUG);
+		assert.isEqual('info', Logger.Levels.INFO);
+		assert.isEqual('warn', Logger.Levels.WARN);
+		assert.isEqual('error', Logger.Levels.ERROR);
+		assert.isEqual('fatal', Logger.Levels.FATAL);
+	});
+
+	test.it('has static Logger.Errors object', () => {
+		assert.isEqual('function', typeof Logger.Errors.ArgumentError);
+		assert.isEqual(ArgumentError, Logger.Errors.ArgumentError);
 	});
 };
