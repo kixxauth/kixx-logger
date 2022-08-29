@@ -22,8 +22,10 @@ module.exports = function runTests(test) {
 		});
 
 		t.it('creates an instance of JsonStdoutStream as a default', () => {
-			assert.isEqual(1, logger.streams.length);
-			assert.isOk(logger.streams[0] instanceof streams.JsonStdout);
+			assert.isEqual(1, logger.streams.size);
+			logger.streams.forEach((stream) => {
+				assert.isOk(stream instanceof streams.JsonStdout);
+			});
 		});
 
 		t.it('assigns default fields', () => {
@@ -68,8 +70,10 @@ module.exports = function runTests(test) {
 		});
 
 		t.it('has the given stream instance', () => {
-			assert.isEqual(1, logger.streams.length);
-			assert.isEqual(stream, logger.streams[0]);
+			assert.isEqual(1, logger.streams.size);
+			logger.streams.forEach((entry) => {
+				assert.isEqual(stream, entry);
+			});
 		});
 
 		t.it('has the given default fields', () => {

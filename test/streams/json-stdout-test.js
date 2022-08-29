@@ -30,6 +30,7 @@ module.exports = (t) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
 			const logger = Logger.create({
+				name: 'root',
 				level: Logger.Levels.TRACE,
 				stream: streams.JsonStdout.create(),
 			});
@@ -101,6 +102,7 @@ module.exports = (t) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
 			const logger = Logger.create({
+				name: 'root',
 				level: Logger.Levels.TRACE,
 				stream: streams.JsonStdout.create(),
 			});
@@ -171,7 +173,10 @@ module.exports = (t) => {
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({ stream: streams.JsonStdout.create() });
+			const logger = Logger.create({
+				name: 'root',
+				stream: streams.JsonStdout.create(),
+			});
 
 			const myObject = {
 				foo: 'bar',
@@ -208,7 +213,10 @@ module.exports = (t) => {
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({ stream: streams.JsonStdout.create() });
+			const logger = Logger.create({
+				name: 'root',
+				stream: streams.JsonStdout.create(),
+			});
 
 			const myObject = {
 				foo: 'bar',
@@ -246,7 +254,10 @@ module.exports = (t) => {
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({ stream: streams.JsonStdout.create() });
+			const logger = Logger.create({
+				name: 'root',
+				stream: streams.JsonStdout.create(),
+			});
 
 			const myObject = {
 				foo: 'bar',
@@ -286,7 +297,10 @@ module.exports = (t) => {
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({ stream: streams.JsonStdout.create() });
+			const logger = Logger.create({
+				name: 'root',
+				stream: streams.JsonStdout.create(),
+			});
 
 			const getterErrorObj = {
 				get baz() {
