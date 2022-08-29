@@ -5,9 +5,12 @@ const { Transform } = require('stream');
 class MockStream extends Transform {
 	constructor() {
 		super({ objectMode: true });
+
+		this.initialized = false;
 	}
 
 	init() {
+		this.initialized = true;
 	}
 
 	_transform(rec, encoding, callback) {
