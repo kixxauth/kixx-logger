@@ -37,6 +37,9 @@ module.exports = function runTests(test) {
 
 		// Adding the stream without an init() method should not throw an error.
 		logger.addStream(stream);
+
+		// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+		logger.dispose();
 	});
 
 	test.describe('when a stream is added more than once', (t) => {
@@ -62,6 +65,8 @@ module.exports = function runTests(test) {
 
 		t.after((done) => {
 			sandbox.restore();
+			// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+			logger.dispose();
 			done();
 		});
 
@@ -77,14 +82,21 @@ module.exports = function runTests(test) {
 	});
 
 	test.describe('with default level', (t) => {
+		let logger;
 		let stream;
 		let levelBefore;
 
 		t.before((done) => {
-			const logger = Logger.create({ name: 'root' });
+			logger = Logger.create({ name: 'root' });
 			stream = MockStream.create();
 			levelBefore = stream.level;
 			logger.addStream(stream);
+			done();
+		});
+
+		t.after((done) => {
+			// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+			logger.dispose();
 			done();
 		});
 
@@ -96,14 +108,21 @@ module.exports = function runTests(test) {
 	});
 
 	test.describe('with given level', (t) => {
+		let logger;
 		let stream;
 		let levelBefore;
 
 		t.before((done) => {
-			const logger = Logger.create({ name: 'root' });
+			logger = Logger.create({ name: 'root' });
 			stream = MockStream.create();
 			levelBefore = stream.level;
 			logger.addStream(stream, Logger.Levels.ERROR);
+			done();
+		});
+
+		t.after((done) => {
+			// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+			logger.dispose();
 			done();
 		});
 
@@ -125,6 +144,9 @@ module.exports = function runTests(test) {
 		assert.isOk(level0Logger.streams.has(stream));
 		assert.isOk(level1Logger.streams.has(stream));
 		assert.isOk(level2Logger.streams.has(stream));
+
+		// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+		level0Logger.dispose();
 	});
 
 	test.it('catches an invalid stream and throws an ArgumentError', () => {
@@ -148,6 +170,9 @@ module.exports = function runTests(test) {
 		}
 
 		assert.isOk(didThrow, 'threw the expected error');
+
+		// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+		logger.dispose();
 	});
 
 	test.it('catches an invalid number level and throws an ArgumentError', () => {
@@ -170,6 +195,9 @@ module.exports = function runTests(test) {
 			assert.isEqual('KixxLoggerArgumentError: Invalid level number: 0', stack[0]);
 			assert.includes('test/logger/logger-add-stream-test.js', stack[1]);
 		}
+
+		// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+		logger.dispose();
 
 		assert.isOk(didThrow, 'threw the expected error');
 	});
@@ -195,6 +223,9 @@ module.exports = function runTests(test) {
 			assert.includes('test/logger/logger-add-stream-test.js', stack[1]);
 		}
 
+		// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+		logger.dispose();
+
 		assert.isOk(didThrow, 'threw the expected error');
 	});
 
@@ -219,6 +250,9 @@ module.exports = function runTests(test) {
 			assert.includes('test/logger/logger-add-stream-test.js', stack[1]);
 		}
 
+		// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+		logger.dispose();
+
 		assert.isOk(didThrow, 'threw the expected error');
 	});
 
@@ -242,6 +276,9 @@ module.exports = function runTests(test) {
 			assert.isEqual('KixxLoggerArgumentError: Invalid level argument: empty string', stack[0]);
 			assert.includes('test/logger/logger-add-stream-test.js', stack[1]);
 		}
+
+		// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+		logger.dispose();
 
 		assert.isOk(didThrow, 'threw the expected error');
 	});

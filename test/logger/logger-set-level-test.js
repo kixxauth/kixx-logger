@@ -42,6 +42,12 @@ module.exports = function runTests(test) {
 			done();
 		});
 
+		t.after((done) => {
+			// Dispose the logger to avoid event emitter memory leak warnings.
+			loggerLevel0.dispose();
+			done();
+		});
+
 		t.it('sets the `level` property', () => {
 			assert.isEqual(LEVEL_STRINGS.TRACE, loggerLevel0.level);
 		});
@@ -76,6 +82,12 @@ module.exports = function runTests(test) {
 			loggerLevel2 = loggerLevel1a.createChild('component');
 
 			loggerLevel0.setLevel(Logger.Levels.DEBUG);
+			done();
+		});
+
+		t.after((done) => {
+			// Dispose the logger to avoid event emitter memory leak warnings.
+			loggerLevel0.dispose();
 			done();
 		});
 
@@ -116,6 +128,12 @@ module.exports = function runTests(test) {
 			done();
 		});
 
+		t.after((done) => {
+			// Dispose the logger to avoid event emitter memory leak warnings.
+			loggerLevel0.dispose();
+			done();
+		});
+
 		t.it('sets the `level` property', () => {
 			assert.isEqual(LEVEL_STRINGS.INFO, loggerLevel0.level);
 		});
@@ -150,6 +168,12 @@ module.exports = function runTests(test) {
 			loggerLevel2 = loggerLevel1a.createChild('component');
 
 			loggerLevel0.setLevel(Logger.Levels.WARN);
+			done();
+		});
+
+		t.after((done) => {
+			// Dispose the logger to avoid event emitter memory leak warnings.
+			loggerLevel0.dispose();
 			done();
 		});
 
@@ -190,6 +214,12 @@ module.exports = function runTests(test) {
 			done();
 		});
 
+		t.after((done) => {
+			// Dispose the logger to avoid event emitter memory leak warnings.
+			loggerLevel0.dispose();
+			done();
+		});
+
 		t.it('sets the `level` property', () => {
 			assert.isEqual(LEVEL_STRINGS.ERROR, loggerLevel0.level);
 		});
@@ -224,6 +254,12 @@ module.exports = function runTests(test) {
 			loggerLevel2 = loggerLevel1a.createChild('component');
 
 			loggerLevel0.setLevel(Logger.Levels.FATAL);
+			done();
+		});
+
+		t.after((done) => {
+			// Dispose the logger to avoid event emitter memory leak warnings.
+			loggerLevel0.dispose();
 			done();
 		});
 
@@ -268,6 +304,9 @@ module.exports = function runTests(test) {
 			assert.includes('test/logger/logger-set-level-test.js', stack[1]);
 		}
 
+		// Dispose the logger to avoid event emitter memory leak warnings.
+		logger.dispose();
+
 		assert.isOk(didThrow, 'threw the expected error');
 	});
 
@@ -290,6 +329,9 @@ module.exports = function runTests(test) {
 			assert.isEqual('KixxLoggerArgumentError: Invalid level string: "foo"', stack[0]);
 			assert.includes('test/logger/logger-set-level-test.js', stack[1]);
 		}
+
+		// Dispose the logger to avoid event emitter memory leak warnings.
+		logger.dispose();
 
 		assert.isOk(didThrow, 'threw the expected error');
 	});
@@ -314,6 +356,9 @@ module.exports = function runTests(test) {
 			assert.includes('test/logger/logger-set-level-test.js', stack[1]);
 		}
 
+		// Dispose the logger to avoid event emitter memory leak warnings.
+		logger.dispose();
+
 		assert.isOk(didThrow, 'threw the expected error');
 	});
 
@@ -337,6 +382,9 @@ module.exports = function runTests(test) {
 			assert.includes('test/logger/logger-set-level-test.js', stack[1]);
 		}
 
+		// Dispose the logger to avoid event emitter memory leak warnings.
+		logger.dispose();
+
 		assert.isOk(didThrow, 'threw the expected error');
 	});
 
@@ -359,6 +407,9 @@ module.exports = function runTests(test) {
 			assert.isEqual('KixxLoggerArgumentError: Invalid level argument: undefined. Must be an integer or string', stack[0]);
 			assert.includes('test/logger/logger-set-level-test.js', stack[1]);
 		}
+
+		// Dispose the logger to avoid event emitter memory leak warnings.
+		logger.dispose();
 
 		assert.isOk(didThrow, 'threw the expected error');
 	});

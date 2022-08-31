@@ -23,13 +23,14 @@ const ISO_DATE_CHECK = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0
 
 module.exports = (t) => {
 	t.describe('JsonStdoutStream with default fields', (t1) => {
+		let logger;
 		const hostname = os.hostname();
 		const pid = process.pid;
 
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({
+			logger = Logger.create({
 				name: 'root',
 				level: Logger.Levels.TRACE,
 				stream: streams.JsonStdout.create(),
@@ -48,6 +49,8 @@ module.exports = (t) => {
 
 		t1.after((done) => {
 			sinon.restore();
+			// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+			logger.dispose();
 			done();
 		});
 
@@ -95,13 +98,14 @@ module.exports = (t) => {
 	});
 
 	t.describe('JsonStdoutStream with additional fields', (t1) => {
+		let logger;
 		const hostname = os.hostname();
 		const pid = process.pid;
 
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({
+			logger = Logger.create({
 				name: 'root',
 				level: Logger.Levels.TRACE,
 				stream: streams.JsonStdout.create(),
@@ -120,6 +124,8 @@ module.exports = (t) => {
 
 		t1.after((done) => {
 			sinon.restore();
+			// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+			logger.dispose();
 			done();
 		});
 
@@ -170,10 +176,11 @@ module.exports = (t) => {
 	});
 
 	t.describe('JsonStdoutStream with circular reference', (t1) => {
+		let logger;
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({
+			logger = Logger.create({
 				name: 'root',
 				stream: streams.JsonStdout.create(),
 			});
@@ -193,6 +200,8 @@ module.exports = (t) => {
 
 		t1.after((done) => {
 			sinon.restore();
+			// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+			logger.dispose();
 			done();
 		});
 
@@ -210,10 +219,12 @@ module.exports = (t) => {
 	});
 
 	t.describe('JsonStdoutStream with getter error', (t1) => {
+		let logger;
+
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({
+			logger = Logger.create({
 				name: 'root',
 				stream: streams.JsonStdout.create(),
 			});
@@ -234,6 +245,8 @@ module.exports = (t) => {
 
 		t1.after((done) => {
 			sinon.restore();
+			// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+			logger.dispose();
 			done();
 		});
 
@@ -251,10 +264,12 @@ module.exports = (t) => {
 	});
 
 	t.describe('JsonStdoutStream with toJSON() error', (t1) => {
+		let logger;
+
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({
+			logger = Logger.create({
 				name: 'root',
 				stream: streams.JsonStdout.create(),
 			});
@@ -277,6 +292,8 @@ module.exports = (t) => {
 
 		t1.after((done) => {
 			sinon.restore();
+			// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+			logger.dispose();
 			done();
 		});
 
@@ -294,10 +311,12 @@ module.exports = (t) => {
 	});
 
 	t.describe('JsonStdoutStream with array containing accessor exceptions', (t1) => {
+		let logger;
+
 		t1.before((done) => {
 			sinon.stub(process.stdout, 'write').callsFake(noop);
 
-			const logger = Logger.create({
+			logger = Logger.create({
 				name: 'root',
 				stream: streams.JsonStdout.create(),
 			});
@@ -338,6 +357,8 @@ module.exports = (t) => {
 
 		t1.after((done) => {
 			sinon.restore();
+			// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+			logger.dispose();
 			done();
 		});
 

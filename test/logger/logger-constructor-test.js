@@ -17,6 +17,11 @@ module.exports = function runTests(test) {
 			done();
 		});
 
+		t.after((done) => {
+			logger.dispose();
+			done();
+		});
+
 		t.it('sets the default level to DEBUG', () => {
 			assert.isEqual('debug', logger.level);
 		});
@@ -62,6 +67,11 @@ module.exports = function runTests(test) {
 				serializers,
 			});
 
+			done();
+		});
+
+		t.after((done) => {
+			logger.dispose();
 			done();
 		});
 
