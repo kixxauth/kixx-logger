@@ -260,11 +260,11 @@ module.exports = function runTests(test) {
 			assert.isOk(err instanceof Error);
 			assert.isOk(err instanceof Errors.ArgumentError);
 			assert.isEqual('KixxLoggerArgumentError', err.name);
-			assert.isEqual('Invalid level number 0', err.message);
+			assert.isEqual('Invalid level number: 0', err.message);
 
 			// KixxLoggerArgumentError uses a custom stack trace.
 			const stack = err.stack.split(os.EOL);
-			assert.isEqual('KixxLoggerArgumentError: Invalid level number 0', stack[0]);
+			assert.isEqual('KixxLoggerArgumentError: Invalid level number: 0', stack[0]);
 			assert.includes('test/logger/logger-set-level-test.js', stack[1]);
 		}
 
@@ -283,11 +283,11 @@ module.exports = function runTests(test) {
 			assert.isOk(err instanceof Error);
 			assert.isOk(err instanceof Errors.ArgumentError);
 			assert.isEqual('KixxLoggerArgumentError', err.name);
-			assert.isEqual('Invalid level string "foo"', err.message);
+			assert.isEqual('Invalid level string: "foo"', err.message);
 
 			// KixxLoggerArgumentError uses a custom stack trace.
 			const stack = err.stack.split(os.EOL);
-			assert.isEqual('KixxLoggerArgumentError: Invalid level string "foo"', stack[0]);
+			assert.isEqual('KixxLoggerArgumentError: Invalid level string: "foo"', stack[0]);
 			assert.includes('test/logger/logger-set-level-test.js', stack[1]);
 		}
 
