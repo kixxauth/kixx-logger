@@ -92,32 +92,101 @@ module.exports = function runTests(test) {
 		});
 	});
 
-	test.describe('when a name attribute is not provided', (t) => {
+	test.it('throws an ArgumentError when a name attribute is not provided', () => {
+		const defaultFields = {};
+		const stream = MockStream.create();
+		const serializers = {};
 
-		t.it('throws an ArgumentError', () => {
-			const defaultFields = {};
-			const stream = MockStream.create();
-			const serializers = {};
+		let didThrow = false;
 
-			let didThrow = false;
+		try {
+			Logger.create({ defaultFields, stream, serializers });
+		} catch (err) {
+			didThrow = true;
+			assert.isOk(err instanceof Error);
+			assert.isOk(err instanceof Errors.ArgumentError);
+			assert.isEqual('KixxLoggerArgumentError', err.name);
+			assert.isEqual('A logger name is required', err.message);
 
-			try {
-				Logger.create({ defaultFields, stream, serializers });
-			} catch (err) {
-				didThrow = true;
-				assert.isOk(err instanceof Error);
-				assert.isOk(err instanceof Errors.ArgumentError);
-				assert.isEqual('KixxLoggerArgumentError', err.name);
-				assert.isEqual('A logger name is required', err.message);
+			// KixxLoggerArgumentError uses a custom stack trace.
+			const stack = err.stack.split(os.EOL);
+			assert.isEqual('KixxLoggerArgumentError: A logger name is required', stack[0]);
+			assert.includes('test/logger/logger-constructor-test.js', stack[1]);
+		}
 
-				// KixxLoggerArgumentError uses a custom stack trace.
-				const stack = err.stack.split(os.EOL);
-				assert.isEqual('KixxLoggerArgumentError: A logger name is required', stack[0]);
-				assert.includes('test/logger/logger-constructor-test.js', stack[1]);
-			}
+		assert.isOk(didThrow, 'threw the expected error');
+	});
 
-			assert.isOk(didThrow, 'threw the expected error');
-		});
+	test.it('throws an ArgumentError when an invalid stream is given', () => {
+		let didThrow = false;
+
+		try {
+			Logger.create({
+				name: 'MyLogger',
+				stream: {},
+			});
+		} catch (err) {
+			didThrow = true;
+			assert.isOk(err instanceof Error);
+			assert.isOk(err instanceof Errors.ArgumentError);
+			assert.isEqual('KixxLoggerArgumentError', err.name);
+			assert.isEqual('A stream must be a Stream instance or provide a Stream API. (Given type "object")', err.message);
+
+			// KixxLoggerArgumentError uses a custom stack trace.
+			const stack = err.stack.split(os.EOL);
+			assert.isEqual('KixxLoggerArgumentError: A stream must be a Stream instance or provide a Stream API. (Given type "object")', stack[0]);
+			assert.includes('test/logger/logger-constructor-test.js', stack[1]);
+		}
+
+		assert.isOk(didThrow, 'threw the expected error');
+	});
+
+	test.it('throws an ArgumentError when an invalid level string is given', () => {
+		let didThrow = false;
+
+		try {
+			Logger.create({
+				name: 'MyLogger',
+				level: '',
+			});
+		} catch (err) {
+			didThrow = true;
+			assert.isOk(err instanceof Error);
+			assert.isOk(err instanceof Errors.ArgumentError);
+			assert.isEqual('KixxLoggerArgumentError', err.name);
+			assert.isEqual('Invalid level argument: empty string', err.message);
+
+			// KixxLoggerArgumentError uses a custom stack trace.
+			const stack = err.stack.split(os.EOL);
+			assert.isEqual('KixxLoggerArgumentError: Invalid level argument: empty string', stack[0]);
+			assert.includes('test/logger/logger-constructor-test.js', stack[1]);
+		}
+
+		assert.isOk(didThrow, 'threw the expected error');
+	});
+
+	test.it('throws an ArgumentError when an invalid level number is given', () => {
+		let didThrow = false;
+
+		try {
+			Logger.create({
+				name: 'MyLogger',
+				level: 0,
+			});
+		} catch (err) {
+			didThrow = true;
+			assert.isOk(err instanceof Error);
+			assert.isOk(err instanceof Errors.ArgumentError);
+			assert.isEqual('KixxLoggerArgumentError', err.name);
+			assert.isEqual('Invalid level number: 0', err.message);
+
+			// KixxLoggerArgumentError uses a custom stack trace.
+			const stack = err.stack.split(os.EOL);
+			assert.isEqual('KixxLoggerArgumentError: Invalid level number: 0', stack[0]);
+			assert.includes('test/logger/logger-constructor-test.js', stack[1]);
+		}
+
+		assert.isOk(didThrow, 'threw the expected error');
 	});
 
 	test.it('has static Logger.Levels object', () => {
