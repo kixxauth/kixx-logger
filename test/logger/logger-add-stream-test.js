@@ -50,7 +50,7 @@ module.exports = function runTests(test) {
 
 		t.before((done) => {
 			logger = Logger.create({ name: 'root' });
-			childLogger = logger.createChild('child');
+			childLogger = logger.createChild({ name: 'child' });
 
 			stream = MockStream.create();
 			sandbox.spy(stream, 'init');
@@ -135,8 +135,8 @@ module.exports = function runTests(test) {
 
 	test.it('adds the stream to all the child loggers', () => {
 		const level0Logger = Logger.create({ name: 'root' });
-		const level1Logger = level0Logger.createChild('level1');
-		const level2Logger = level1Logger.createChild('level2');
+		const level1Logger = level0Logger.createChild({ name: 'level1' });
+		const level2Logger = level1Logger.createChild({ name: 'level2' });
 		const stream = MockStream.create();
 
 		level0Logger.addStream(stream);

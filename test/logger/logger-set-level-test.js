@@ -34,9 +34,9 @@ module.exports = function runTests(test) {
 
 		t.before((done) => {
 			loggerLevel0 = Logger.create({ name: 'root' });
-			loggerLevel1a = loggerLevel0.createChild('application');
-			loggerLevel1b = loggerLevel0.createChild('database');
-			loggerLevel2 = loggerLevel1a.createChild('component');
+			loggerLevel1a = loggerLevel0.createChild({ name: 'application' });
+			loggerLevel1b = loggerLevel0.createChild({ name: 'database' });
+			loggerLevel2 = loggerLevel1a.createChild({ name: 'component' });
 
 			loggerLevel0.setLevel(Logger.Levels.TRACE);
 			done();
@@ -77,9 +77,9 @@ module.exports = function runTests(test) {
 
 		t.before((done) => {
 			loggerLevel0 = Logger.create({ name: 'root' });
-			loggerLevel1a = loggerLevel0.createChild('application');
-			loggerLevel1b = loggerLevel0.createChild('database');
-			loggerLevel2 = loggerLevel1a.createChild('component');
+			loggerLevel1a = loggerLevel0.createChild({ name: 'application' });
+			loggerLevel1b = loggerLevel0.createChild({ name: 'database' });
+			loggerLevel2 = loggerLevel1a.createChild({ name: 'component' });
 
 			loggerLevel0.setLevel(Logger.Levels.DEBUG);
 			done();
@@ -120,9 +120,9 @@ module.exports = function runTests(test) {
 
 		t.before((done) => {
 			loggerLevel0 = Logger.create({ name: 'root' });
-			loggerLevel1a = loggerLevel0.createChild('application');
-			loggerLevel1b = loggerLevel0.createChild('database');
-			loggerLevel2 = loggerLevel1a.createChild('component');
+			loggerLevel1a = loggerLevel0.createChild({ name: 'application' });
+			loggerLevel1b = loggerLevel0.createChild({ name: 'database' });
+			loggerLevel2 = loggerLevel1a.createChild({ name: 'component' });
 
 			loggerLevel0.setLevel(Logger.Levels.INFO);
 			done();
@@ -163,9 +163,9 @@ module.exports = function runTests(test) {
 
 		t.before((done) => {
 			loggerLevel0 = Logger.create({ name: 'root' });
-			loggerLevel1a = loggerLevel0.createChild('application');
-			loggerLevel1b = loggerLevel0.createChild('database');
-			loggerLevel2 = loggerLevel1a.createChild('component');
+			loggerLevel1a = loggerLevel0.createChild({ name: 'application' });
+			loggerLevel1b = loggerLevel0.createChild({ name: 'database' });
+			loggerLevel2 = loggerLevel1a.createChild({ name: 'component' });
 
 			loggerLevel0.setLevel(Logger.Levels.WARN);
 			done();
@@ -206,9 +206,9 @@ module.exports = function runTests(test) {
 
 		t.before((done) => {
 			loggerLevel0 = Logger.create({ name: 'root' });
-			loggerLevel1a = loggerLevel0.createChild('application');
-			loggerLevel1b = loggerLevel0.createChild('database');
-			loggerLevel2 = loggerLevel1a.createChild('component');
+			loggerLevel1a = loggerLevel0.createChild({ name: 'application' });
+			loggerLevel1b = loggerLevel0.createChild({ name: 'database' });
+			loggerLevel2 = loggerLevel1a.createChild({ name: 'component' });
 
 			loggerLevel0.setLevel(Logger.Levels.ERROR);
 			done();
@@ -249,9 +249,9 @@ module.exports = function runTests(test) {
 
 		t.before((done) => {
 			loggerLevel0 = Logger.create({ name: 'root' });
-			loggerLevel1a = loggerLevel0.createChild('application');
-			loggerLevel1b = loggerLevel0.createChild('database');
-			loggerLevel2 = loggerLevel1a.createChild('component');
+			loggerLevel1a = loggerLevel0.createChild({ name: 'application' });
+			loggerLevel1b = loggerLevel0.createChild({ name: 'database' });
+			loggerLevel2 = loggerLevel1a.createChild({ name: 'component' });
 
 			loggerLevel0.setLevel(Logger.Levels.FATAL);
 			done();

@@ -53,7 +53,7 @@ module.exports = function runTests(test) {
 				},
 			});
 
-			childLogger = logger.createChild('ComponentName');
+			childLogger = logger.createChild({ name: 'ComponentName' });
 			done();
 		});
 
