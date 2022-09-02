@@ -14,6 +14,14 @@ __node__ >= 16.0.0 (tested on Node.js 16.14.0)
 
 __npm__ >= 8.0.0 (published with npm 8.3.1)
 
+__Jump to:__
+
+- [Logger API](#logger)
+- [Levels](#levels)
+- [Fields](#fields)
+- [Serializers](#serializers)
+- [Streams](#streams)
+
 ## Examples
 ```js
 const { Logger } = require('kixx-logger');
@@ -90,7 +98,7 @@ db.init();
 
 Notice in the example above we call setLevel() on the root logger *after* a child logger has been created in the Database constructor. The child logger will get the setLevel() change set on the root logger even after it has been created. See [Child Loggers](#child-loggers) for more information.
 
-If the logger in the Database init() method will output to [stdout](http://www.linfo.org/standard_output.html). Notice the composite name field representing the child logger's relationship to the parent:
+Notice the composite name field representing the child logger's relationship to the parent:
 
 ```
 {"name":"RootApplication:Database","hostname":"kixxauth-Mac-mini.local","pid":16643,"time":"2022-09-01T11:05:47.834Z","level":30,"msg":"initialized"}
@@ -132,7 +140,7 @@ The example above will output 2 log lines; one from the RootApplication logger a
 
 ```
 {"name":"RootApplication","hostname":"kixxauth-Mac-mini.local","pid":1426,"service":"my-micro-service","component":"server","time":"2022-09-02T11:27:24.054Z","level":30,"msg":"initializing the database"}
-{"name":"RootApplication:DataBase","hostname":"kixxauth-Mac-mini.local","pid":1426,"service":"my-micro-service","component":"my-database","time":"2022-09-02T11:27:24.454Z","level":30,"msg":"initialized"}
+{"name":"RootApplication:Database","hostname":"kixxauth-Mac-mini.local","pid":1426,"service":"my-micro-service","component":"my-database","time":"2022-09-02T11:27:24.454Z","level":30,"msg":"initialized"}
 ```
 
 ## API
@@ -183,7 +191,7 @@ name | description | type | required | default
 name | The name for the logger instance which will be output as the `name` field | String | yes | |
 level | The level for the logger; one of `Logger.Levels`. See [levels](#levels). | Number | optional | `Logger.Levels.DEBUG`
 stream | The output stream for the logger instance | WriteableStream | optional | [JsonStdout](#jsonstdout)
-defaultFields | Output values to include in every log output. See [Custom Fields](#custom-fields) | Object | optional | `{ name, hostname, pid }`
+defaultFields | Output values to include in every log output. See [Fields](#fields) | Object | optional | `{ name, hostname, pid }`
 serializers | A map of serialization functions to known log output fields. See [Serializers](#serializers) | Object | optional | `{}`
 
 __NOTE:__ Use `Logger.create()` instead of `new Logger()`. It's much safer.
@@ -251,7 +259,7 @@ name | description | type | required | default
 -----|-------------|------|----------|---------
 name | Will be combined with the parent logger name and output as the `name` field | String | yes | |
 level | The level for the logger; one of `Logger.Levels`. See [levels](#levels). | Number | optional | Parent Logger level
-defaultFields | Output values to include in every log output. See [Custom Fields](#custom-fields) | Object | optional | Parent Logger values
+defaultFields | Output values to include in every log output. See [Fields](#fields) | Object | optional | Parent Logger values
 serializers | A map of serialization functions to known log output fields. | Object | optional | Parent Logger values
 
 If a level is not provided, it will be inherited from the parent Logger. If `.setLevel()` is called on the parent logger it will update the log level on the entire child logger sub-tree down from that parent.
