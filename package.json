@@ -1,11 +1,11 @@
 {
   "name": "kixx-logger",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A logger for Node.js programs",
   "main": "index.js",
   "engines": {
     "node": ">=16.0.0",
-    "npm": "~8.3.1"
+    "npm": ">=8.3.1"
   },
   "scripts": {
     "test": "eslint ./ && kixx-test-node --quiet ./test",
@@ -27,6 +27,8 @@
     "JSON"
   ],
   "files": [
+    "README.md",
+    "MIT-LICENSE",
     "/lib",
     "index.js"
   ],
