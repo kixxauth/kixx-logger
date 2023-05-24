@@ -218,6 +218,49 @@ module.exports = (t) => {
 		});
 	});
 
+	t.describe('JsonStdoutStream with undefined value', (t1) => {
+		function createObject(foo) {
+			return { foo, bar: '44' };
+		}
+
+		let logger;
+
+		t1.before((done) => {
+			sinon.stub(process.stdout, 'write').callsFake(noop);
+
+			logger = Logger.create({
+				name: 'root',
+				stream: streams.JsonStdout.create(),
+			});
+
+			const myObject = createObject();
+
+			logger.info('undefined field', myObject);
+
+			// Introduce some delay to catch the async call.
+			return delay(10).then(done);
+		});
+
+		t1.after((done) => {
+			sinon.restore();
+			// Need to dispose the logger to avoid reaching the listener limit on process.stdout
+			logger.dispose();
+			done();
+		});
+
+		t1.it('writes the expected number of times', () => {
+			assert.isEqual(1, process.stdout.write.callCount);
+		});
+
+		t1.it('writes expected output', () => {
+			const { args } = process.stdout.write.firstCall;
+			assert.isOk(args[0].endsWith(EOL));
+			const { hostname, pid, time } = JSON.parse(args[0].trim());
+			const firstPart = `{"name":"${ DEFAULT_NAME }","hostname":"${ hostname }","pid":${ pid },"time":"${ time }","level":30,"msg":"undefined field"`;
+			assert.isEqual(`${ firstPart },"foo":"[undefined]","bar":"44"}${ EOL }`, args[0]);
+		});
+	});
+
 	t.describe('JsonStdoutStream with getter error', (t1) => {
 		let logger;
 
