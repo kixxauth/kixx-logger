@@ -34,6 +34,7 @@ module.exports = function runTests(test) {
 			logger.trace('a trace log');
 			logger.debug('a debug log');
 			logger.info('a info log');
+			logger.log('a log log');
 			logger.warn('a warn log');
 			logger.error('a error log');
 			logger.fatal('a fatal log');
@@ -72,6 +73,14 @@ module.exports = function runTests(test) {
 			});
 
 			assert.isNotEmpty(record);
+		});
+
+		t.it('logs out log messages', () => {
+			const records = logs.filter(({ level }) => {
+				return level === LEVEL_NUMBERS.INFO;
+			});
+
+			assert.isEqual(2, records.length);
 		});
 
 		t.it('logs out warn messages', () => {
@@ -117,6 +126,7 @@ module.exports = function runTests(test) {
 			logger.trace('a trace log');
 			logger.debug('a debug log');
 			logger.info('a info log');
+			logger.log('a log log');
 			logger.warn('a warn log');
 			logger.error('a error log');
 			logger.fatal('a fatal log');
@@ -155,6 +165,14 @@ module.exports = function runTests(test) {
 			});
 
 			assert.isNotEmpty(record);
+		});
+
+		t.it('logs out log messages', () => {
+			const records = logs.filter(({ level }) => {
+				return level === LEVEL_NUMBERS.INFO;
+			});
+
+			assert.isEqual(2, records.length);
 		});
 
 		t.it('logs out warn messages', () => {
@@ -200,6 +218,7 @@ module.exports = function runTests(test) {
 			logger.trace('a trace log');
 			logger.debug('a debug log');
 			logger.info('a info log');
+			logger.log('a log log');
 			logger.warn('a warn log');
 			logger.error('a error log');
 			logger.fatal('a fatal log');
@@ -238,6 +257,14 @@ module.exports = function runTests(test) {
 			});
 
 			assert.isNotEmpty(record);
+		});
+
+		t.it('logs out log messages', () => {
+			const records = logs.filter(({ level }) => {
+				return level === LEVEL_NUMBERS.INFO;
+			});
+
+			assert.isEqual(2, records.length);
 		});
 
 		t.it('logs out warn messages', () => {
@@ -283,6 +310,7 @@ module.exports = function runTests(test) {
 			logger.trace('a trace log');
 			logger.debug('a debug log');
 			logger.info('a info log');
+			logger.log('a log log');
 			logger.warn('a warn log');
 			logger.error('a error log');
 			logger.fatal('a fatal log');
@@ -366,6 +394,7 @@ module.exports = function runTests(test) {
 			logger.trace('a trace log');
 			logger.debug('a debug log');
 			logger.info('a info log');
+			logger.log('a log log');
 			logger.warn('a warn log');
 			logger.error('a error log');
 			logger.fatal('a fatal log');
@@ -449,6 +478,7 @@ module.exports = function runTests(test) {
 			logger.trace('a trace log');
 			logger.debug('a debug log');
 			logger.info('a info log');
+			logger.log('a log log');
 			logger.warn('a warn log');
 			logger.error('a error log');
 			logger.fatal('a fatal log');

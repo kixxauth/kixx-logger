@@ -44,6 +44,8 @@ module.exports = function runTests(test) {
 			return LEVEL_NUMBERS[key];
 		});
 
+		expectedLevels.splice(3, 0, LEVEL_NUMBERS.INFO);
+
 		let logger;
 		let records;
 
@@ -61,6 +63,7 @@ module.exports = function runTests(test) {
 			logger.trace('trace record');
 			logger.debug('debug record');
 			logger.info('info record');
+			logger.log('info record');
 			logger.warn('warn record');
 			logger.error('error record');
 			logger.fatal('fatal record');
@@ -79,7 +82,7 @@ module.exports = function runTests(test) {
 		});
 
 		t.it('emits expected records', () => {
-			assert.isEqual(6, records.length);
+			assert.isEqual(7, records.length);
 
 			records.forEach((record, index) => {
 				const date = new Date()

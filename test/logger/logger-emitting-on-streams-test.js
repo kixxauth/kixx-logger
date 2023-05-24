@@ -49,6 +49,7 @@ module.exports = function runTests(test) {
 			logger.trace('a trace log');
 			logger.debug('a debug log');
 			logger.info('a info log');
+			logger.log('a log log');
 			logger.warn('a warn log');
 			logger.error('a error log');
 			logger.fatal('a fatal log');
@@ -62,7 +63,7 @@ module.exports = function runTests(test) {
 		});
 
 		t.it('calls the trace stream for appropriate levels', () => {
-			assert.isEqual(6, streams.trace.write.callCount);
+			assert.isEqual(7, streams.trace.write.callCount);
 
 			const records = streams.trace.write.getCalls().map(({ args }) => {
 				return args[0];
@@ -71,13 +72,14 @@ module.exports = function runTests(test) {
 			assert.isEqual(LEVEL_NUMBERS.TRACE, records[0].level);
 			assert.isEqual(LEVEL_NUMBERS.DEBUG, records[1].level);
 			assert.isEqual(LEVEL_NUMBERS.INFO, records[2].level);
-			assert.isEqual(LEVEL_NUMBERS.WARN, records[3].level);
-			assert.isEqual(LEVEL_NUMBERS.ERROR, records[4].level);
-			assert.isEqual(LEVEL_NUMBERS.FATAL, records[5].level);
+			assert.isEqual(LEVEL_NUMBERS.INFO, records[3].level);
+			assert.isEqual(LEVEL_NUMBERS.WARN, records[4].level);
+			assert.isEqual(LEVEL_NUMBERS.ERROR, records[5].level);
+			assert.isEqual(LEVEL_NUMBERS.FATAL, records[6].level);
 		});
 
 		t.it('calls the debug stream for appropriate levels', () => {
-			assert.isEqual(5, streams.debug.write.callCount);
+			assert.isEqual(6, streams.debug.write.callCount);
 
 			const records = streams.debug.write.getCalls().map(({ args }) => {
 				return args[0];
@@ -85,22 +87,24 @@ module.exports = function runTests(test) {
 
 			assert.isEqual(LEVEL_NUMBERS.DEBUG, records[0].level);
 			assert.isEqual(LEVEL_NUMBERS.INFO, records[1].level);
-			assert.isEqual(LEVEL_NUMBERS.WARN, records[2].level);
-			assert.isEqual(LEVEL_NUMBERS.ERROR, records[3].level);
-			assert.isEqual(LEVEL_NUMBERS.FATAL, records[4].level);
+			assert.isEqual(LEVEL_NUMBERS.INFO, records[2].level);
+			assert.isEqual(LEVEL_NUMBERS.WARN, records[3].level);
+			assert.isEqual(LEVEL_NUMBERS.ERROR, records[4].level);
+			assert.isEqual(LEVEL_NUMBERS.FATAL, records[5].level);
 		});
 
 		t.it('calls the info stream for appropriate levels', () => {
-			assert.isEqual(4, streams.info.write.callCount);
+			assert.isEqual(5, streams.info.write.callCount);
 
 			const records = streams.info.write.getCalls().map(({ args }) => {
 				return args[0];
 			});
 
 			assert.isEqual(LEVEL_NUMBERS.INFO, records[0].level);
-			assert.isEqual(LEVEL_NUMBERS.WARN, records[1].level);
-			assert.isEqual(LEVEL_NUMBERS.ERROR, records[2].level);
-			assert.isEqual(LEVEL_NUMBERS.FATAL, records[3].level);
+			assert.isEqual(LEVEL_NUMBERS.INFO, records[1].level);
+			assert.isEqual(LEVEL_NUMBERS.WARN, records[2].level);
+			assert.isEqual(LEVEL_NUMBERS.ERROR, records[3].level);
+			assert.isEqual(LEVEL_NUMBERS.FATAL, records[4].level);
 		});
 
 		t.it('calls the warn stream for appropriate levels', () => {
