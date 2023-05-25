@@ -87,10 +87,10 @@ module.exports = function runTests(test) {
 			records.forEach((record, index) => {
 				const date = new Date()
 					.toISOString()
-					.split('T')[0];
+					.split(':')[0];
 
 				// Approximate the date for comparison so we don't fail on millisecond comparisons.
-				assert.isOk(record.time.toISOString().startsWith(date), `record[${ index }]].time Date`);
+				assert.isOk(record.time.startsWith(date), `record[${ index }]].time Date`);
 				assert.isEqual('MyLogger', record.name, `record[${ index }].name`);
 				assert.isEqual(os.hostname(), record.hostname, `record[${ index }].hostname`);
 				assert.isEqual(process.pid, record.pid, `record[${ index }].pid`);
@@ -116,6 +116,7 @@ module.exports = function runTests(test) {
 				name: 'MyLogger',
 				stream,
 				defaultFields: {
+					hostname: 'MyHostname',
 					location: 'unknown',
 					code: 0,
 					route: '/admin',
@@ -145,18 +146,32 @@ module.exports = function runTests(test) {
 			done();
 		});
 
-		t.it('allows overriding known low level fields', () => {
-			assert.isEqual('000', record.time);
-			assert.isEqual('xxx', record.name);
-			assert.isEqual('foo', record.hostname);
-			assert.isEqual(10101010, record.pid);
-			assert.isEqual(1000, record.level);
-			assert.isEqual('another message', record.msg);
+		t.it('does NOT allow overriding known low level fields', () => {
+			const date = new Date()
+				.toISOString()
+				.split(':')[0];
+
+			assert.isOk(record.time.startsWith(date), 'record.time');
+			assert.isEqual('MyLogger', record.name);
+			assert.isEqual('MyHostname', record.hostname);
+			assert.isEqual(process.pid, record.pid);
+			assert.isEqual(30, record.level);
+			assert.isEqual('my message', record.msg);
+
+			assert.isEqual('000', record.$time);
+			assert.isEqual('xxx', record.$name);
+			assert.isEqual('foo', record.$hostname);
+			assert.isEqual(10101010, record.$pid);
+			assert.isEqual(1000, record.$level);
+			assert.isEqual('another message', record.$msg);
 		});
 
-		t.it('allows overriding user defined default fields', () => {
-			assert.isEqual('logger-log-records-test', record.location);
-			assert.isEqual(42, record.code);
+		t.it('does NOT allow overriding user defined default fields', () => {
+			assert.isEqual('unknown', record.location);
+			assert.isEqual(0, record.code);
+
+			assert.isEqual('logger-log-records-test', record.$location);
+			assert.isEqual(42, record.$code);
 		});
 
 		t.it('allows adding log specific fields', () => {
@@ -195,7 +210,7 @@ module.exports = function runTests(test) {
 						return val.toUpperCase();
 					},
 					hostname(val) {
-						return os.hostname() + val;
+						return `host:${ val }`;
 					},
 					level(val) {
 						return val / 10;
@@ -242,14 +257,14 @@ module.exports = function runTests(test) {
 		});
 
 		t.it('tranforms overwritten fields', () => {
-			assert.isEqual(0, record.time);
-			assert.isEqual('XXX', record.name);
-			assert.isEqual(`${ os.hostname() }foo`, record.hostname);
-			assert.isEqual(10101010, record.pid);
-			assert.isEqual(100, record.level);
-			assert.isEqual('ANOTHER MESSAGE', record.msg);
-			assert.isEqual('LOGGER-LOG-RECORDS-TEST', record.location);
-			assert.isEqual(420, record.code);
+			assert.isEqual(2023, record.time);
+			assert.isEqual('MYLOGGER', record.name);
+			assert.isEqual(`host:${ os.hostname() }`, record.hostname);
+			assert.isEqual(process.pid, record.pid);
+			assert.isEqual(3, record.level);
+			assert.isEqual('MY MESSAGE', record.msg);
+			assert.isEqual('UNKNOWN', record.location);
+			assert.isEqual(0, record.code);
 		});
 
 		t.it('transforms log specific fields', () => {
