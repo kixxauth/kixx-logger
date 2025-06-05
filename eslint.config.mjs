@@ -14,7 +14,7 @@ export default [
             ecmaVersion: 2022,
             sourceType: 'module',
             globals: {
-                structuredClone: 'readonly',
+                console: 'readonly',
             },
         },
         rules: {
