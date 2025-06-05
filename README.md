@@ -1,20 +1,33 @@
 Kixx Logger
 ===========
-A logger for Node.js programs.
+A logger for HTTP application servers built with JavaScript (Node.js, Deno, etc).
 
-Created by [Kris Walker](https://www.kriswalker.me) 2017 - 2023.
-
-Inspired by [Bunyan](https://github.com/trentm/node-bunyan).
+Created by [Kris Walker](https://www.kriswalker.me) 2017 - 2025.
 
 ## Principles
 - __No dependencies:__ A logger is a low level primitive component which systems depend on and should NOT complicate matters by having dependencies itself.
 - __Provide rich and indexable information:__ Logs should be output in structured data formats which can be leveraged by other tools for analysis.
-- __Flexibility without complexity:__ Use good defaults but provide opportunities for users to override nearly all functionality.
 
-## Engines
-__node__ >= 16.0.0 (tested on Node.js 16.14.0)
+Environment Support
+-------------------
 
-__npm__ >= 8.0.0 (published with npm 8.3.1)
+| Env     | Version    |
+|---------|------------|
+| ECMA    | >= ES2022  |
+| Node.js | >= 16.13.2 |
+| Deno    | >= 1.0.0   |
+
+This library is designed for use in an ES6 module environment requiring __Node.js >= 16.13.2__ or __Deno >= 1.0.0__. You could use it in a browser, but there are no plans to offer CommonJS or AMD modules. It targets at least [ES2022](https://node.green/#ES2022) and uses the optional chaining operator `?.`.
+
+If you're curious: Node.js >= 16.13.2 is required for [ES6 module stabilization](https://nodejs.org/dist/latest-v18.x/docs/api/esm.html#modules-ecmascript-modules) and [ES2022 support](https://node.green/#ES2020).
+
+__Note:__ There is no TypeScript here. It would be waste of time for a library as small as this.
+
+Installation
+------------
+```bash
+npm install kixx-logger 
+```
 
 __Jump to:__
 

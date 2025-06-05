@@ -1,41 +1,38 @@
 {
   "name": "kixx-logger",
-  "version": "2.1.0",
-  "description": "A logger for Node.js programs",
-  "main": "index.js",
+  "version": "3.0.0",
+  "description": "A logger for HTTP application servers built with JavaScript (Node.js, Deno, etc).",
+  "type": "module",
+  "main": "mod.js",
   "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.3.1"
+    "node": ">=16.13.2"
   },
   "scripts": {
-    "test": "eslint ./ && kixx-test-node --quiet ./test",
+    "test": "eslint ./ && node ./test/run-tests.js",
     "lint": "eslint ./"
   },
-  "homepage": "https://github.com/kixxauth/kixx-logger",
   "repository": {
     "type": "git",
     "url": "https://github.com/kixxauth/kixx-logger.git"
   },
+  "files": [
+    "mod.js"
+  ],
+  "devDependencies": {
+    "@eslint/js": "9.27.0",
+    "eslint": "9.27.0",
+    "kixx-assert": "2.0.1",
+    "kixx-test": "2.0.0",
+    "sinon": "20.0.0"
+  },
+  "keywords": [
+    "logger",
+    "JSON"
+  ],
+  "author": "Kris Walker (www.kriswalker.me)",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/kixxauth/kixx-logger/issues"
   },
-  "author": "Kris Walker (www.kriswalker.me)",
-  "license": "MIT",
-  "keywords": [
-    "logger",
-    "stream",
-    "JSON"
-  ],
-  "files": [
-    "README.md",
-    "MIT-LICENSE",
-    "/lib",
-    "index.js"
-  ],
-  "devDependencies": {
-    "eslint": "8.23.0",
-    "kixx-assert": "~1.0.6",
-    "kixx-test-node": "~1.4.3",
-    "sinon": "14.0.0"
-  }
+  "homepage": "https://github.com/kixxauth/kixx-logger"
 }
