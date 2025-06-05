@@ -15,6 +15,7 @@ export default [
             sourceType: 'module',
             globals: {
                 console: 'readonly',
+                setTimeout: 'readonly',
             },
         },
         rules: {
